@@ -23,6 +23,7 @@ export const { styled, globalCss } = createStitches({
             blue1: '#482ff7',
             darkBlue1: '#1F4287',
 
+            // Login page specific tokens.
             loginHeaderBgColor: '$black1',
             loginLogoTextColor: '$white1',
             loginBigTitleTextColor: '$white1',
@@ -32,7 +33,18 @@ export const { styled, globalCss } = createStitches({
             loginInputBgColor: '$whiteTransparent1',
             loginInputTextColor: '$black1',
             loginButtonBgColor: '$green1',
-            loginButtonTextColor: '$white1'
+            loginButtonTextColor: '$white1',
+
+            // Sidebar specific tokens.
+            sidebarTitleTextColor: '$purple1',
+            sidebarUsernameTextColor: '$black2',
+            sidebarSeparatorBgColor: '$black2',
+            sidebarBgColor: '$white1',
+            sidebarLogoutButtonTextColor: '$white1',
+            sidebarLogoutButtonBgColor: '$red1',
+
+            // Home page specific tokens.
+            homeBgColor: '$white2'
         },
 
         fonts: {
@@ -41,8 +53,8 @@ export const { styled, globalCss } = createStitches({
 
         fontSizes: {
             root: '62.50%',
-            small: '1.5rem',
-            md: '2rem',
+            sm: '1.7rem',
+            md: '2.1rem',
             lg: '2.5rem',
             xlg: '3.5rem'
         },
