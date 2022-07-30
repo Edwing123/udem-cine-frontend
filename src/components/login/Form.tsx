@@ -13,12 +13,12 @@ const StyledForm = styled('form', {
 
 const ButtonContainer = styled('div', {
     textAlign: 'center',
-    marginTop: '4rem'
+    marginTop: '$40'
 })
 
 const Button = styled('button', {
     display: 'inline-block',
-    padding: '1rem 5rem',
+    padding: '$12 $44',
 
     cursor: 'pointer',
     fontSize: '$md',

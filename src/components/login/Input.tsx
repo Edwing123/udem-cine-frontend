@@ -3,7 +3,7 @@ import { styled } from '@config/stitches.config'
 
 const Container = styled('div', {
     display: 'flex',
-    marginBottom: '2rem',
+    marginBottom: '$20',
 
     borderRadius: '$md',
     overflow: 'hidden'
@@ -25,7 +25,7 @@ const Icon = styled('img', {
 
 const StyledInput = styled('input', {
     width: '100%',
-    padding: '0.8rem 1.4rem',
+    padding: '$8 $16',
 
     border: 'none',
     fontWeight: '$bold',

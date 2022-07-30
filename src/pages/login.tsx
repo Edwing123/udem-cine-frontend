@@ -9,7 +9,7 @@ const Container = styled('div', {
 })
 
 const StyledTitle = styled(Title, {
-    margin: '6rem 0 3rem',
+    margin: '$52 0 $40',
 
     color: '$loginBigTitleTextColor',
     textAlign: 'center'

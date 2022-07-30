@@ -2,7 +2,7 @@ import { styled } from '@config/stitches.config'
 import Title from '@components/Title'
 
 const StyledHeader = styled('header', {
-    padding: '1.5rem 4rem',
+    padding: '$12 $36',
     backgroundColor: '$loginHeaderBgColor'
 })
 
