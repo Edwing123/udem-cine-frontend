@@ -6,6 +6,5 @@
     "arrowParens": "always",
     "editorconfig": true,
     "singleQuote": true,
-    "jsxSingleQuote": true,
-    "singleAttributePerLine": true
+    "jsxSingleQuote": true
 }
