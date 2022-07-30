@@ -20,6 +20,7 @@ const Button = styled('button', {
     display: 'inline-block',
     padding: '$12 $44',
 
+    userSelect: 'none',
     cursor: 'pointer',
     fontSize: '$md',
     fontWeight: '$bold',

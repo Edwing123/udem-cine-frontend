@@ -1,4 +1,4 @@
-import type { ChangeEvent, FC } from 'react'
+import { ChangeEvent, FC, useId } from 'react'
 import { styled } from '@config/stitches.config'
 
 const Container = styled('div', {
@@ -9,7 +9,7 @@ const Container = styled('div', {
     overflow: 'hidden'
 })
 
-const IconContainer = styled('span', {
+const IconContainer = styled('label', {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -51,12 +51,15 @@ type Props = {
 }
 
 const Input: FC<Props> = ({ type = 'text', placeholder, icon, onChange }) => {
+    const id = useId()
+
     return (
         <Container>
-            <IconContainer>
+            <IconContainer htmlFor={id} aria-label={placeholder}>
                 <Icon src={icon} aria-hidden />
             </IconContainer>
             <StyledInput
+                id={id}
                 autoComplete='off'
                 spellCheck='false'
                 onChange={onChange}
