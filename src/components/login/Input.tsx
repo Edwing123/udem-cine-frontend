@@ -5,7 +5,7 @@ const Container = styled('div', {
     display: 'flex',
     marginBottom: '2rem',
 
-    borderRadius: '8px',
+    borderRadius: '$md',
     overflow: 'hidden'
 })
 
@@ -29,7 +29,7 @@ const StyledInput = styled('input', {
 
     border: 'none',
     fontWeight: '$bold',
-    fontSize: '2rem',
+    fontSize: '$md',
     color: '$loginInputTextColor',
     backgroundColor: '$loginInputBgColor',
 
@@ -57,6 +57,8 @@ const Input: FC<Props> = ({ type = 'text', placeholder, icon, onChange }) => {
                 <Icon src={icon} aria-hidden />
             </IconContainer>
             <StyledInput
+                autoComplete='off'
+                spellCheck='false'
                 onChange={onChange}
                 type={type}
                 placeholder={placeholder}

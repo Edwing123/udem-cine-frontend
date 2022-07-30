@@ -21,10 +21,10 @@ const Button = styled('button', {
     padding: '1rem 5rem',
 
     cursor: 'pointer',
-    fontSize: '2rem',
+    fontSize: '$md',
     fontWeight: '$bold',
     border: 'none',
-    borderRadius: '8px',
+    borderRadius: '$md',
     color: '$loginButtonTextColor',
     backgroundColor: '$loginButtonBgColor'
 })

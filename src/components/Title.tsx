@@ -6,11 +6,11 @@ const Title = styled('h1', {
     variants: {
         size: {
             1: {
-                $$fontSize: '2.5rem'
+                $$fontSize: '$fontSizes$lg'
             },
 
             2: {
-                $$fontSize: '3.5rem'
+                $$fontSize: '$fontSizes$xlg'
             }
         }
     }
