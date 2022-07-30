@@ -21,7 +21,18 @@ export const { styled, globalCss } = createStitches({
             red2: '#ff1f5a',
 
             blue1: '#482ff7',
-            darkBlue1: '#1F4287'
+            darkBlue1: '#1F4287',
+
+            loginHeaderBgColor: '$black1',
+            loginLogoTextColor: '$white1',
+            loginBigTitleTextColor: '$white1',
+            loginBgColor: '$purple1',
+            loginIconBgColor: '$black1',
+            loginPlaceholderTextColor: '$blackTransparent1',
+            loginInputBgColor: '$whiteTransparent1',
+            loginInputTextColor: '$black1',
+            loginButtonBgColor: '$green1',
+            loginButtonTextColor: '$white1'
         },
 
         fonts: {
