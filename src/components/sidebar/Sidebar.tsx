@@ -14,7 +14,6 @@ const ButtonContainer = styled('div', {
 const LogoutButton = styled(Button, {
     color: '$sidebarLogoutButtonTextColor',
     backgroundColor: '$sidebarLogoutButtonBgColor',
-    fontWeight: '$bold',
     fontSize: '$sm'
 })
 

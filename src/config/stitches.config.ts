@@ -10,15 +10,20 @@ export const { styled, globalCss, css } = createStitches({
 
             white1: '#ffffff',
             white2: '#eeeeee',
+            white3: '#d9d9d9',
+            white4: '#ececec',
             whiteTransparent1: 'hsla(0, 0%, 95%, 0.7)',
 
             green1: '#00b488',
             green2: '#17B978',
+            green3: '#00a27a',
 
             purple1: '#574b90',
+            purple2: '#7858a6',
 
             red1: '#ff304f',
             red2: '#ff1f5a',
+            red3: '#f9433a',
 
             blue1: '#482ff7',
             darkBlue1: '#1F4287',
@@ -43,7 +48,18 @@ export const { styled, globalCss, css } = createStitches({
             sidebarLogoutButtonTextColor: '$white1',
             sidebarLogoutButtonBgColor: '$red1',
             sidebarNavigationItemTextColor: '$black2',
-            sidebarNavigationItemOnHoverBgColor: '$whiteTransparent1',
+            sidebarNavigationItemOnHoverBgColor: '$white4',
+
+            // Page's global tokens.
+            pageTitleTextColor: '$black2',
+            tableHeaderTextColor: '$purple2',
+            tableDataTextColor: '$black2',
+            tableRowBgColor: '$white1',
+            tableOptionsMenuBgColor: '$white1',
+            tableOptionsTextColor: '$black2',
+            tableOptionsOnHoverBgColor: '$white2',
+            tableOptionsSeparatorBgColor: '$white3',
+            addButtonBgColor: '$white1',
 
             // Home page specific tokens.
             homeBgColor: '$white2'
@@ -55,8 +71,8 @@ export const { styled, globalCss, css } = createStitches({
 
         fontSizes: {
             root: '62.50%',
-            sm: '1.7rem',
-            md: '2.1rem',
+            sm: '1.8rem',
+            md: '2rem',
             lg: '2.5rem',
             xlg: '3.5rem'
         },
@@ -71,9 +87,12 @@ export const { styled, globalCss, css } = createStitches({
             medium: 1.5
         },
 
-        shadows: {},
+        shadows: {
+            tableOptionsMenu: '0 0 30px $colors$white3'
+        },
 
         radii: {
+            xsm: '2px',
             sm: '4px',
             md: '10px',
             lg: '18px'

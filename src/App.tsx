@@ -5,6 +5,7 @@ import { globalStyles } from '@config/stitches.config'
 const Home = lazy(() => import('@pages/home'))
 const Movies = lazy(() => import('@pages/movies/index'))
 const MoviesCreate = lazy(() => import('@pages/movies/create'))
+const MoviesEdit = lazy(() => import('@pages/movies/edit'))
 const Rooms = lazy(() => import('@pages/rooms/index'))
 const Schedules = lazy(() => import('@pages/schedules/index'))
 const Functions = lazy(() => import('@pages/functions/index'))
@@ -39,6 +40,14 @@ const App = () => {
                         element={
                             <Suspense>
                                 <MoviesCreate />
+                            </Suspense>
+                        }
+                    />
+                    <Route
+                        path='movies/edit/:movie_id'
+                        element={
+                            <Suspense>
+                                <MoviesEdit />
                             </Suspense>
                         }
                     />

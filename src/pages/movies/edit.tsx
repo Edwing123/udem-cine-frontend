@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import PageTitle from '@components/PageTitle'
 import { Table, Row, Cell } from '@components/table'
 import Button from '@components/Button'
@@ -46,12 +46,13 @@ const ActionsButtons = styled('div', {
     gap: '$16'
 })
 
-const Create = () => {
+const Edit = () => {
+    const { movie_id } = useParams<{ movie_id: string }>()
     const navigateTo = useNavigate()
 
     return (
         <>
-            <PageTitle>Agregar pelicula</PageTitle>
+            <PageTitle>Editar pelicula (id={movie_id!})</PageTitle>
 
             <Table>
                 <TableHeaders />
@@ -76,7 +77,7 @@ const Create = () => {
             </Table>
 
             <ActionsButtons>
-                <Button type='success'>Agregar</Button>
+                <Button type='success'>Guardar</Button>
                 <Button onClick={() => navigateTo('/movies')} type='danger'>
                     Cancelar
                 </Button>
@@ -85,4 +86,4 @@ const Create = () => {
     )
 }
 
-export default Create
+export default Edit

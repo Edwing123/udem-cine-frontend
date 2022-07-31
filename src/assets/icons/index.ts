@@ -8,6 +8,13 @@ import tickets from './navigation/tickets.svg'
 import key from './forms/key.svg'
 import user from './forms/user.svg'
 
+import add from './interactions/add.svg'
+import edit from './interactions/edit.svg'
+// Gotta use an underscore because there's a reserved keyword
+// called delete in Javascript
+import _delete from './interactions/delete.svg'
+import contextMenu from './interactions/context-menu.svg'
+
 export const navigation = {
     movies,
     users,
@@ -25,3 +32,12 @@ export const forms = {
 }
 
 export type FormsIconsKeys = keyof typeof forms
+
+export const interactions = {
+    add,
+    edit,
+    delete: _delete,
+    contextMenu
+}
+
+export type InteractionsIconsKeys = keyof typeof interactions

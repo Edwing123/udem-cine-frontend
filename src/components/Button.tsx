@@ -9,9 +9,24 @@ const Button = styled('button', {
     border: 'none',
     fontSize: '$sm',
     borderRadius: '$sm',
+    backgroundColor: '$$bgColor',
+    fontWeight: '$bold',
 
     '&:focus': {
         outline: 'none'
+    },
+
+    variants: {
+        type: {
+            success: {
+                $$bgColor: '$colors$green3',
+                color: '$white1'
+            },
+            danger: {
+                $$bgColor: '$colors$red3',
+                color: '$white1'
+            }
+        }
     }
 })
 
