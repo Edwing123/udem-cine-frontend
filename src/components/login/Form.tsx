@@ -1,7 +1,7 @@
 import { ChangeEvent, useState } from 'react'
 import { styled } from '@config/stitches.config'
 import Input from './Input'
-import { forms as formsIcon } from '@assets/icons'
+import { forms as formsIcons } from '@assets/icons'
 import type { Credentails } from '@typ/data'
 
 const StyledForm = styled('form', {
@@ -48,7 +48,7 @@ const Form = () => {
             <Input
                 type='text'
                 placeholder='Nombre de usuario'
-                icon={formsIcon.user}
+                icon={formsIcons.user}
                 value={credentials.username}
                 onChange={handleUsernameChange}
             />
@@ -56,7 +56,7 @@ const Form = () => {
             <Input
                 type='password'
                 placeholder='Contraseña'
-                icon={formsIcon.key}
+                icon={formsIcons.key}
                 value={credentials.password}
                 onChange={handlePasswordChange}
             />
