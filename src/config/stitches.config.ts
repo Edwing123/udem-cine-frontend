@@ -1,6 +1,6 @@
 import { createStitches } from '@stitches/react'
 
-export const { styled, globalCss } = createStitches({
+export const { styled, globalCss, css } = createStitches({
     media: {},
     theme: {
         colors: {
@@ -42,6 +42,8 @@ export const { styled, globalCss } = createStitches({
             sidebarBgColor: '$white1',
             sidebarLogoutButtonTextColor: '$white1',
             sidebarLogoutButtonBgColor: '$red1',
+            sidebarNavigationItemTextColor: '$black2',
+            sidebarNavigationItemOnHoverBgColor: '$whiteTransparent1',
 
             // Home page specific tokens.
             homeBgColor: '$white2'

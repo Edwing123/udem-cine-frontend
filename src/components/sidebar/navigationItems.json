@@ -1,0 +1,50 @@
+[
+    {
+        "id": "1",
+        "text": "Gestionar peliculas",
+        "path": "/movies",
+        "icon": "movies",
+        "activeBgColor": "#DAD5FD",
+        "borderColor": "#482FF7"
+    },
+    {
+        "id": "2",
+        "text": "Gestionar usuarios",
+        "path": "/users",
+        "icon": "users",
+        "activeBgColor": "#D1F1E4",
+        "borderColor": "#17B978"
+    },
+    {
+        "id": "3",
+        "text": "Gestionar salas",
+        "path": "/rooms",
+        "icon": "rooms",
+        "activeBgColor": "#DDDBE9",
+        "borderColor": "#574B90"
+    },
+    {
+        "id": "4",
+        "text": "Gestionar horarios",
+        "path": "/schedules",
+        "icon": "schedules",
+        "activeBgColor": "#D2D9E7",
+        "borderColor": "#1F4287"
+    },
+    {
+        "id": "5",
+        "text": "Gestionar funciones",
+        "path": "/functions",
+        "icon": "functions",
+        "activeBgColor": "#E4DEF8",
+        "borderColor": "#775ADA"
+    },
+    {
+        "id": "6",
+        "text": "Vender boletos",
+        "path": "/tickets",
+        "icon": "tickets",
+        "activeBgColor": "#FFd2DE",
+        "borderColor": "#FF1F5A"
+    }
+]

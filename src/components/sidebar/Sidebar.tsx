@@ -14,7 +14,8 @@ const ButtonContainer = styled('div', {
 const LogoutButton = styled(Button, {
     color: '$sidebarLogoutButtonTextColor',
     backgroundColor: '$sidebarLogoutButtonBgColor',
-    fontWeight: '$bold'
+    fontWeight: '$bold',
+    fontSize: '$sm'
 })
 
 const StyledSidebar = styled('aside', {
@@ -29,6 +30,8 @@ const Sidebar = () => {
     return (
         <StyledSidebar>
             <Header />
+
+            <Navigation />
 
             <ButtonContainer>
                 <LogoutButton>Cerrar sesion</LogoutButton>

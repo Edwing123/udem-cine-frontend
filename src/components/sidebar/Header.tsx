@@ -5,6 +5,7 @@ import profilePicuture from '@assets/images/profile-picture.svg'
 const StyledHeader = styled('header', {
     width: '100%',
     padding: '$28 0 0',
+    marginBottom: '$16',
 
     textAlign: 'center',
     userSelect: 'none'
@@ -46,8 +47,8 @@ const Header = () => {
             <ProfilePicture
                 aria-label='Foto de perfil de usuario'
                 alt=''
-                width=''
-                height=''
+                width='80'
+                height='80'
                 src={profilePicuture}
             />
 

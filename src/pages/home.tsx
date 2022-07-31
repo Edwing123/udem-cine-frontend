@@ -10,11 +10,17 @@ const Container = styled('div', {
     backgroundColor: '$homeBgColor'
 })
 
+const StyledMain = styled('main', {
+    padding: '$40'
+})
+
 const Home = () => {
     return (
         <Container>
             <Sidebar />
-            <Outlet />
+            <StyledMain>
+                <Outlet />
+            </StyledMain>
         </Container>
     )
 }
