@@ -1,8 +1,10 @@
+import { lazy, Suspense } from 'react'
 import { Routes, Route } from 'react-router-dom'
-import Home from '@pages/home'
-import Users from '@pages/users/index'
-import Login from '@pages/login'
 import { globalStyles } from '@config/stitches.config'
+
+const Home = lazy(() => import('@pages/home'))
+const Users = lazy(() => import('@pages/users/index'))
+const Login = lazy(() => import('@pages/login'))
 
 const App = () => {
     globalStyles()
@@ -10,10 +12,31 @@ const App = () => {
     return (
         <>
             <Routes>
-                <Route path='/' element={<Home />}>
-                    <Route path='users' element={<Users />} />
+                <Route
+                    path='/'
+                    element={
+                        <Suspense>
+                            <Home />
+                        </Suspense>
+                    }
+                >
+                    <Route
+                        path='users'
+                        element={
+                            <Suspense>
+                                <Users />
+                            </Suspense>
+                        }
+                    />
                 </Route>
-                <Route path='/login' element={<Login />} />
+                <Route
+                    path='/login'
+                    element={
+                        <Suspense>
+                            <Login />
+                        </Suspense>
+                    }
+                />
             </Routes>
         </>
     )
