@@ -53,8 +53,6 @@ const LinkStyles = css({
 type Props = Omit<NavigationItem, 'id'>
 
 const Link: FC<Props> = ({ path, text, icon, borderColor, activeBgColor }) => {
-    console.log(borderColor)
-
     return (
         <NavLink to={path} className={LinkStyles}>
             <Container
