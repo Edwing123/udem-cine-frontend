@@ -1,5 +1,5 @@
 import { styled } from '@config/stitches.config'
-import { FC, ReactElement } from 'react'
+import { FC, ReactNode } from 'react'
 
 export const StyledCell = styled('div', {
     fontSize: '$sm',
@@ -20,7 +20,7 @@ export const StyledCell = styled('div', {
 })
 
 type Props = {
-    children: ReactElement | string
+    children: ReactNode
     width?: string
     type?: 'text' | 'header'
 }
