@@ -7,53 +7,34 @@ import {
     Add as AddButton,
     OptionsMenu
 } from '@components/table'
-import { styled } from '@config/stitches.config'
 import testMovies from './testMovies.json'
+import { FC } from 'react'
+import type { Movie } from '@typ/data'
+import { TableHeaders, columnsWidth } from './common'
+import Divider from '@components/pages/Divider'
 
 const {
     titleWidth,
-    clasificationWidth,
+    classificationWidth,
     genreWidth,
     durationWidth,
     releaseDateWidth
-} = {
-    titleWidth: '30%',
-    clasificationWidth: '15%',
-    genreWidth: '12%',
-    durationWidth: '10%',
-    releaseDateWidth: '33%'
+} = columnsWidth
+
+type MoviesRowsProps = {
+    movies: Movie[]
+    onEdit: (id: number) => () => void
+    onDelete: (id: number) => () => void
 }
 
-const TableHeaders = () => {
-    return (
-        <Row>
-            <Cell type='header' width={titleWidth}>
-                Titulo
-            </Cell>
-            <Cell type='header' width={clasificationWidth}>
-                Clasificacion
-            </Cell>
-            <Cell type='header' width={genreWidth}>
-                Genero
-            </Cell>
-            <Cell type='header' width={durationWidth}>
-                Duracion
-            </Cell>
-            <Cell type='header' width={releaseDateWidth}>
-                Fecha de lanzamiento
-            </Cell>
-        </Row>
-    )
-}
-
-const TestMovies = () => {
+const MoviesRows: FC<MoviesRowsProps> = ({ movies, onEdit, onDelete }) => {
     return (
         <>
-            {testMovies.map(
+            {movies.map(
                 ({
-                    title,
                     id,
-                    clasification,
+                    title,
+                    classification,
                     duration,
                     genre,
                     releaseDate
@@ -64,8 +45,8 @@ const TestMovies = () => {
                                 {title}
                             </Cell>
 
-                            <Cell width={clasificationWidth} type='text'>
-                                {clasification}
+                            <Cell width={classificationWidth} type='text'>
+                                {classification}
                             </Cell>
                             <Cell width={genreWidth} type='text'>
                                 {genre}
@@ -76,7 +57,11 @@ const TestMovies = () => {
                             <Cell width={releaseDateWidth} type='text'>
                                 {releaseDate}
                             </Cell>
-                            <OptionsMenu title='Opciones' />
+                            <OptionsMenu
+                                title='Opciones'
+                                onEdit={onEdit(id)}
+                                onDelete={onDelete(id)}
+                            />
                         </Row>
                     )
                 }
@@ -85,17 +70,18 @@ const TestMovies = () => {
     )
 }
 
-const Divider = styled('div', {
-    display: 'flex',
-    gap: '$40'
-})
-
 const Movies = () => {
     const navigateTo = useNavigate()
 
     const goToCreateMovie = () => {
         navigateTo('/movies/create')
     }
+
+    const onEdit = (id: number) => () => {
+        navigateTo(`/movies/edit/${id}`)
+    }
+
+    const onDelete = (id: number) => () => {}
 
     return (
         <>
@@ -104,7 +90,11 @@ const Movies = () => {
             <Divider>
                 <Table>
                     <TableHeaders />
-                    <TestMovies />
+                    <MoviesRows
+                        movies={testMovies}
+                        onEdit={onEdit}
+                        onDelete={onDelete}
+                    />
                 </Table>
 
                 <AddButton title='Agregar pelicula' onClick={goToCreateMovie} />

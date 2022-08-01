@@ -70,7 +70,7 @@ type Props = {
     title: string
 }
 
-const OptionsMenu: FC<Props> = ({ title }) => {
+const OptionsMenu: FC<Props> = ({ title, onEdit, onDelete }) => {
     return (
         <Root>
             <StyledTrigger aria-label={title} title={title}>
@@ -81,7 +81,7 @@ const OptionsMenu: FC<Props> = ({ title }) => {
             </StyledTrigger>
             <Portal>
                 <StyledContent>
-                    <ItemButton>
+                    <ItemButton onClick={onEdit}>
                         <ItemICon
                             width='21'
                             height='21'
@@ -91,7 +91,7 @@ const OptionsMenu: FC<Props> = ({ title }) => {
                         <ItemText>Editar</ItemText>
                     </ItemButton>
                     <Separator />
-                    <ItemButton>
+                    <ItemButton onClick={onDelete}>
                         <ItemICon
                             width='21'
                             height='21'
