@@ -78,7 +78,7 @@ const OptionsMenu: FC<Props> = ({ title, onEdit, onDelete }) => {
                     aria-hidden
                     src={interactionsIcons.contextMenu}
                     width='36'
-                    height='7'
+                    height='6.50'
                 ></ButtonIcon>
             </StyledTrigger>
             <Portal>
