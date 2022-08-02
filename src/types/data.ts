@@ -40,8 +40,8 @@ export type UpdateUser = {
 }
 
 export type Room = {
-    number: string
-    seats: string
+    number: number
+    seats: number
 }
 
 export type NewRoom = Room
