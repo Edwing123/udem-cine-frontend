@@ -52,6 +52,10 @@ const StyledItem = styled(Item, sharedStyles, {
     '&:is(:hover, :focus-visible)': {
         backgroundColor: '$white4',
         outline: 'none'
+    },
+
+    '&[data-state=checked]': {
+        color: '$blue1'
     }
 })
 

@@ -1,0 +1,39 @@
+{
+    "movies": [
+        {
+            "id": 1,
+            "title": "Avengers: Infinity War"
+        },
+        {
+            "id": 2,
+            "title": "Spider-Man: No Way Home"
+        }
+    ],
+
+    "schedules": [
+        {
+            "id": 1,
+            "name": "2pm"
+        },
+        {
+            "id": 2,
+            "name": "5pm"
+        },
+        {
+            "id": 3,
+            "name": "8pm"
+        }
+    ],
+
+    "rooms": [
+        {
+            "number": 1
+        },
+        {
+            "number": 2
+        },
+        {
+            "number": 3
+        }
+    ]
+}

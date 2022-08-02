@@ -21,6 +21,9 @@ const SchedulesCreate = lazy(() => import('@pages/schedules/create'))
 const SchedulesEdit = lazy(() => import('@pages/schedules/edit'))
 
 const Functions = lazy(() => import('@pages/functions/index'))
+const FunctionsCreate = lazy(() => import('@pages/functions/create'))
+const FunctionsEdit = lazy(() => import('@pages/functions/edit'))
+
 const Login = lazy(() => import('@pages/login'))
 
 const App = () => {
@@ -147,6 +150,22 @@ const App = () => {
                         element={
                             <Suspense>
                                 <Functions />
+                            </Suspense>
+                        }
+                    />
+                    <Route
+                        path='functions/create'
+                        element={
+                            <Suspense>
+                                <FunctionsCreate />
+                            </Suspense>
+                        }
+                    />
+                    <Route
+                        path='functions/edit/:function_id'
+                        element={
+                            <Suspense>
+                                <FunctionsEdit />
                             </Suspense>
                         }
                     />

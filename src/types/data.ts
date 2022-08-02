@@ -48,3 +48,21 @@ export type Schedule = {
 export type NewSchedule = Omit<Schedule, 'id'>
 
 export type UpdateSchedule = Omit<Schedule, 'id'>
+
+export type Function = {
+    id: number
+    movie: string
+    schedule: string
+    room: number
+    price: number
+    createdAt: string
+}
+
+export type NewFunction = {
+    movieId: number
+    scheduleId: number
+    room: number
+    price: number
+}
+
+export type UpdateFunction = NewFunction

@@ -84,7 +84,6 @@ const Create = () => {
                             type='number'
                             inputMode='numeric'
                             placeholder='Duracion'
-                            spellCheck='false'
                             value={duration}
                             name='duration'
                             onChange={handleInputChange}
