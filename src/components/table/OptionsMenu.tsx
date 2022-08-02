@@ -10,17 +10,17 @@ const StyledTrigger = styled(Trigger, {
     transform: 'translateY(-50%)',
 
     border: 'none',
+    borderRadius: '$sm',
     backgroundColor: 'transparent',
     cursor: 'pointer',
-    transition: 'all 100ms linear',
 
     '&:is(:hover, :focus-visible)': {
-        outline: 'none',
-        transform: 'scale(1.1) translateY(-50%)'
+        outline: '2px solid $colors$blue1',
+        outlineOffset: '3px'
     }
 })
 
-const MenuIcon = styled('img', {})
+const ButtonIcon = styled('img', {})
 
 const StyledContent = styled(Content, {
     width: '130px',
@@ -74,10 +74,10 @@ const OptionsMenu: FC<Props> = ({ title, onEdit, onDelete }) => {
     return (
         <Root>
             <StyledTrigger aria-label={title} title={title}>
-                <MenuIcon
+                <ButtonIcon
                     aria-hidden
                     src={interactionsIcons.contextMenu}
-                ></MenuIcon>
+                ></ButtonIcon>
             </StyledTrigger>
             <Portal>
                 <StyledContent>

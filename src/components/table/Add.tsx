@@ -9,12 +9,11 @@ const StyledAdd = styled('button', {
     borderRadius: '$xsm',
     border: 'none',
     backgroundColor: '$addButtonBgColor',
-    transition: 'all 100ms linear',
     cursor: 'pointer',
 
     '&:is(:hover, :focus-visible)': {
-        outline: 'none',
-        transform: 'scale(1.1)'
+        outline: '2px solid $colors$blue1',
+        outlineOffset: '3px'
     }
 })
 
