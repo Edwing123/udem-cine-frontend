@@ -4,7 +4,7 @@ import { useState } from 'react'
 import PageTitle from '@components/PageTitle'
 import { Table, Row, Cell } from '@components/table'
 import Button from '@components/Button'
-import { NewMovie } from '@typ/data'
+import { UpdateMovie } from '@typ/data'
 import { Input, Select } from '@components/controls'
 import ActionsButtons from '@components/pages/ActionsButtons'
 import { TableHeaders, classificationOptions, columnsWidth } from './common'
@@ -22,7 +22,7 @@ const Edit = () => {
     const navigateTo = useNavigate()
 
     const [{ title, classification, genre, duration, releaseDate }, setState] =
-        useState<NewMovie>({
+        useState<UpdateMovie>({
             title: '',
             classification: '',
             genre: '',
