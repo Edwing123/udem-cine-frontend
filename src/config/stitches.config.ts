@@ -17,14 +17,15 @@ export const { styled, globalCss, css } = createStitches({
 
             green1: '#00b488',
             green2: '#17B978',
-            green3: '#007155',
+            green3: '#007e5f',
+            green4: '#00a27a',
 
             purple1: '#574b90',
             purple2: '#7858a6',
 
             red1: '#ff304f',
             red2: '#ff1f5a',
-            red3: '#cc1948',
+            red3: '#e61c51',
 
             blue1: '#482ff7',
             darkBlue1: '#1F4287',
@@ -66,7 +67,13 @@ export const { styled, globalCss, css } = createStitches({
             inputPlaceholderTextColor: '$white5',
 
             // Home page specific tokens.
-            homeBgColor: '$white2'
+            homeBgColor: '$white2',
+
+            // Button component.
+            buttonSucessBgColor: '$green3',
+            buttonSucessOnHoverBgColor: '$green4',
+            buttonDangerBgColor: '$red3',
+            buttonDangerOnHoverBgColor: '$red2'
         },
 
         fonts: {

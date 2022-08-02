@@ -11,19 +11,23 @@ const Button = styled('button', {
     borderRadius: '$sm',
     backgroundColor: '$$bgColor',
     fontWeight: '$bold',
+    transition: 'all 100ms linear',
 
-    '&:focus': {
-        outline: 'none'
+    '&:is(:hover, :focus-visible)': {
+        outline: 'none',
+        backgroundColor: '$$onHoverBgColor'
     },
 
     variants: {
         type: {
             success: {
-                $$bgColor: '$colors$green3',
+                $$bgColor: '$colors$buttonSucessBgColor',
+                $$onHoverBgColor: '$colors$buttonSucessOnHoverBgColor',
                 color: '$white1'
             },
             danger: {
-                $$bgColor: '$colors$red3',
+                $$bgColor: '$colors$buttonDangerBgColor',
+                $$onHoverBgColor: '$colors$buttonDangerOnHoverBgColor',
                 color: '$white1'
             }
         }
