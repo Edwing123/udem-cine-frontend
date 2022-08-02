@@ -4,7 +4,7 @@
         "title": "Avengers: Infinity War",
         "classification": "PG",
         "genre": "Accion",
-        "duration": "2h 29m",
+        "duration": 8940,
         "releaseDate": "23 de abril de 2018"
     },
     {
@@ -12,7 +12,7 @@
         "title": "Spider-Man: No Way Home",
         "classification": "PG-13",
         "genre": "Aventura",
-        "duration": "2h 28m",
+        "duration": 8880,
         "releaseDate": "17 de deciembre de 2021"
     }
 ]

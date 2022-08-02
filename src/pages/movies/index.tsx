@@ -53,7 +53,7 @@ const MoviesRows: FC<MoviesRowsProps> = ({ movies, onEdit, onDelete }) => {
                                 {genre}
                             </Cell>
                             <Cell width={durationWidth} type='text'>
-                                {duration}
+                                {pagesUtils.prettifyDuration(duration)}
                             </Cell>
                             <Cell width={releaseDateWidth} type='text'>
                                 {releaseDate}
