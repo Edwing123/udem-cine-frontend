@@ -8,19 +8,13 @@ export type Movie = {
     title: string
     classification: string
     genre: string
-    duration: string
-    releaseDate: string
-}
-
-export type NewMovie = {
-    title: string
-    classification: string
-    genre: string
     duration: number
     releaseDate: string
 }
 
-export type UpdateMovie = NewMovie
+export type NewMovie = Omit<Movie, 'id'>
+
+export type UpdateMovie = Omit<Movie, 'id'>
 
 export type User = {
     id: number
@@ -34,10 +28,7 @@ export type NewUser = {
     password: string
 }
 
-export type UpdateUser = {
-    name: string
-    role: string
-}
+export type UpdateUser = Omit<User, 'id'>
 
 export type Room = {
     number: number
@@ -47,3 +38,13 @@ export type Room = {
 export type NewRoom = Room
 
 export type UpdateRoom = Room
+
+export type Schedule = {
+    id: number
+    name: string
+    time: string
+}
+
+export type NewSchedule = Omit<Schedule, 'id'>
+
+export type UpdateSchedule = Omit<Schedule, 'id'>

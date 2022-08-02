@@ -17,6 +17,9 @@ const RoomsCreate = lazy(() => import('@pages/rooms/create'))
 const RoomsEdit = lazy(() => import('@pages/rooms/edit'))
 
 const Schedules = lazy(() => import('@pages/schedules/index'))
+const SchedulesCreate = lazy(() => import('@pages/schedules/create'))
+const SchedulesEdit = lazy(() => import('@pages/schedules/edit'))
+
 const Functions = lazy(() => import('@pages/functions/index'))
 const Login = lazy(() => import('@pages/login'))
 
@@ -118,6 +121,22 @@ const App = () => {
                         element={
                             <Suspense>
                                 <Schedules />
+                            </Suspense>
+                        }
+                    />
+                    <Route
+                        path='schedules/create'
+                        element={
+                            <Suspense>
+                                <SchedulesCreate />
+                            </Suspense>
+                        }
+                    />
+                    <Route
+                        path='schedules/edit/:schedule_id'
+                        element={
+                            <Suspense>
+                                <SchedulesEdit />
                             </Suspense>
                         }
                     />
