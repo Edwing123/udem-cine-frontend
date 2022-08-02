@@ -2,13 +2,7 @@ import { Select } from '@components/controls'
 import { Cell, Row } from '@components/table'
 import { classifications } from './data.json'
 
-const {
-    titleWidth,
-    classificationWidth,
-    genreWidth,
-    durationWidth,
-    releaseDateWidth
-} = {
+export const columnsWidth = {
     titleWidth: '30%',
     classificationWidth: '15%',
     genreWidth: '12%',
@@ -16,13 +10,13 @@ const {
     releaseDateWidth: '33%'
 }
 
-export const columnsWidth = {
+const {
     titleWidth,
     classificationWidth,
     genreWidth,
     durationWidth,
     releaseDateWidth
-}
+} = columnsWidth
 
 export const TableHeaders = () => {
     return (
