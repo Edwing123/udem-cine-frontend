@@ -50,7 +50,7 @@ const UsersRows: FC<UsersRowsProps> = ({ users, onEdit, onDelete }) => {
 const Users = () => {
     const navigateTo = useNavigate()
 
-    const goToCreateMovie = () => {
+    const goToCreateUser = () => {
         navigateTo('/users/create')
     }
 
@@ -74,7 +74,7 @@ const Users = () => {
                     />
                 </Table>
 
-                <AddButton title='Agregar usuario' onClick={goToCreateMovie} />
+                <AddButton title='Agregar usuario' onClick={goToCreateUser} />
             </Divider>
         </>
     )
