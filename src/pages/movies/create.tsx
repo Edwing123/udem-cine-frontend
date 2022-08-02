@@ -17,6 +17,8 @@ const {
 } = columnsWidth
 
 const Create = () => {
+    const navigateTo = useNavigate()
+
     const [{ title, classification, genre, duration, releaseDate }, setState] =
         useState<NewMovie>({
             title: '',
@@ -36,8 +38,6 @@ const Create = () => {
     const handleClasificationChange = (v: string) => {
         setState((s) => ({ ...s, classification: v }))
     }
-
-    const navigateTo = useNavigate()
 
     return (
         <>

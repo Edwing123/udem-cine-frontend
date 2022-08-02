@@ -12,6 +12,7 @@ import { FC } from 'react'
 import type { Movie } from '@typ/data'
 import { TableHeaders, columnsWidth } from './common'
 import Divider from '@components/pages/Divider'
+import * as pagesUtils from '@utils/pages'
 
 const {
     titleWidth,
@@ -77,11 +78,11 @@ const Movies = () => {
         navigateTo('/movies/create')
     }
 
-    const onEdit = (id: number) => () => {
+    const onEdit = pagesUtils.id((id: number) => {
         navigateTo(`/movies/edit/${id}`)
-    }
+    })
 
-    const onDelete = (id: number) => () => {}
+    const onDelete = pagesUtils.id((id: number) => {})
 
     return (
         <>
