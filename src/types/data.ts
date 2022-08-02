@@ -19,3 +19,20 @@ export type NewMovie = {
     duration: number
     releaseDate: string
 }
+
+export type User = {
+    id: number
+    name: string
+    role: string
+}
+
+export type NewUser = {
+    name: string
+    role: string
+    password: string
+}
+
+export type UpdateUser = {
+    name: string
+    role: string
+}
