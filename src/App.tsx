@@ -1,4 +1,3 @@
-import type { ReactNode } from 'react'
 import { lazy, Suspense, useEffect } from 'react'
 import { Routes, Route, useNavigate, Outlet } from 'react-router-dom'
 import { globalStyles } from '@config/stitches.config'
@@ -35,7 +34,6 @@ const AdminOnly = ({ isAdmin }: { isAdmin: boolean }) => {
 
     useEffect(() => {
         !isAdmin && goTo('/tickets')
-        console.log('ok')
     })
 
     if (isAdmin) {
@@ -54,10 +52,9 @@ const AdminOnly = ({ isAdmin }: { isAdmin: boolean }) => {
 }
 
 const App = () => {
-    const { role } = useStore(userStore)
-
     globalStyles()
     const goTo = useNavigate()
+    const { role } = useStore(userStore)
 
     useEffect(() => {
         AuthAPI.isLoggedIn().then(({ id, ok }) => {
@@ -68,7 +65,7 @@ const App = () => {
 
             isLoggedInStore.set(true)
             getUserDetails(id).then(() => {
-                if (role === 'admin') {
+                if (userStore.get().role === 'admin') {
                     goTo('/users')
                 } else {
                     goTo('/tickets')

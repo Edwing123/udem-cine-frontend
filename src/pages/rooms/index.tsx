@@ -1,7 +1,6 @@
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import PageTitle from '@components/PageTitle'
-import testRooms from './testRooms.json'
 import type { Room } from '@typ/data'
 import { TableHeaders, columnsWidth } from './common'
 import Divider from '@components/pages/Divider'
@@ -13,6 +12,7 @@ import {
     Add as AddButton,
     OptionsMenu
 } from '@components/table'
+import { RoomsAPI } from '@api'
 
 const { numberWidth, seatsWidth } = columnsWidth
 
@@ -49,6 +49,15 @@ const RoomsRows: FC<RoomsRowsProps> = ({ rooms, onEdit, onDelete }) => {
 
 const Rooms = () => {
     const navigateTo = useNavigate()
+    const [rooms, setRooms] = useState<Room[]>([])
+
+    const [reload, setReload] = useState(false)
+
+    useEffect(() => {
+        RoomsAPI.list().then((rooms) => {
+            setRooms(rooms)
+        })
+    }, [reload])
 
     const goToCreateRoom = () => {
         navigateTo('/rooms/create')
@@ -58,7 +67,17 @@ const Rooms = () => {
         navigateTo(`/rooms/edit/${id}`)
     })
 
-    const onDelete = pagesUtils.id((id: number) => {})
+    const onDelete = pagesUtils.id((id: number) => {
+        const yes = confirm('Eliminar sala?')
+
+        if (!yes) {
+            return
+        }
+
+        RoomsAPI.delete(id).then(() => {
+            setReload((v) => !v)
+        })
+    })
 
     return (
         <>
@@ -68,7 +87,7 @@ const Rooms = () => {
                 <Table>
                     <TableHeaders />
                     <RoomsRows
-                        rooms={testRooms}
+                        rooms={rooms}
                         onEdit={onEdit}
                         onDelete={onDelete}
                     />

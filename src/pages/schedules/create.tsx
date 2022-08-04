@@ -7,22 +7,50 @@ import Button from '@components/Button'
 import type { NewSchedule } from '@typ/data'
 import ActionsButtons from '@components/pages/ActionsButtons'
 import { columnsWidth, TableHeaders } from './common'
+import { SchedulesAPI } from '@api'
 
 const { nameWidth, timeWidth } = columnsWidth
 
 const Create = () => {
     const navigateTo = useNavigate()
+    const [isCreating, setIsCreating] = useState(false)
 
     const [{ name, time }, setState] = useState<NewSchedule>({
         name: '',
         time: ''
     })
 
+    const goToSchedules = () => navigateTo('/schedules')
+
+    const isButtonDisabled = name.length == 0 || time.length == 0 || isCreating
+
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         const name = e.target.name
         const value = e.target.value
 
+        console.log(value)
+
         setState((s) => ({ ...s, [name]: value }))
+    }
+
+    const handleOnSave = () => {
+        setIsCreating(true)
+
+        SchedulesAPI.create({
+            name,
+            time
+        })
+            .then(({ ok, ...props }) => {
+                if (!ok && 'reason' in props) {
+                    alert(props.reason)
+                    return
+                }
+
+                goToSchedules()
+            })
+            .finally(() => {
+                setIsCreating(false)
+            })
     }
 
     return (
@@ -38,6 +66,7 @@ const Create = () => {
                             type='text'
                             placeholder='Nombre'
                             spellCheck='false'
+                            autoComplete='off'
                             value={name}
                             name='name'
                             onChange={handleInputChange}
@@ -59,8 +88,14 @@ const Create = () => {
             </Table>
 
             <ActionsButtons>
-                <Button type='success'>Crear</Button>
-                <Button onClick={() => navigateTo('/schedules')} type='danger'>
+                <Button
+                    disabled={isButtonDisabled}
+                    onClick={handleOnSave}
+                    type='success'
+                >
+                    Crear
+                </Button>
+                <Button onClick={goToSchedules} type='danger'>
                     Cancelar
                 </Button>
             </ActionsButtons>

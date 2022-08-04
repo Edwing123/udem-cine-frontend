@@ -1,13 +1,16 @@
 import { useNavigate, useParams } from 'react-router-dom'
 import type { ChangeEvent } from 'react'
+import { useEffect } from 'react'
+import { useRef } from 'react'
 import { useState } from 'react'
 import PageTitle from '@components/PageTitle'
 import { Table, Row, Cell } from '@components/table'
 import Button from '@components/Button'
-import { UpdateMovie } from '@typ/data'
+import { UpdateMovie, Movie } from '@typ/data'
 import { Input, Select } from '@components/controls'
 import ActionsButtons from '@components/pages/ActionsButtons'
 import { TableHeaders, classificationOptions, columnsWidth } from './common'
+import { MoviesAPI } from '@api'
 
 const {
     titleWidth,
@@ -21,6 +24,21 @@ const Edit = () => {
     const { movie_id } = useParams<{ movie_id: string }>()
     const navigateTo = useNavigate()
 
+    const currentValues = useRef<Movie>({
+        id: 0,
+        title: '',
+        classification: '',
+        duration: 0,
+        genre: '',
+        releaseDate: ''
+    })
+
+    const goToMovies = () => {
+        navigateTo('/movies')
+    }
+
+    const [isEditing, setIsEditing] = useState(false)
+
     const [{ title, classification, genre, duration, releaseDate }, setState] =
         useState<UpdateMovie>({
             title: '',
@@ -30,9 +48,23 @@ const Edit = () => {
             releaseDate: ''
         })
 
+    const isButtonDisabled =
+        title.length === 0 ||
+        classification.length === 0 ||
+        genre.length === 0 ||
+        duration < 0 ||
+        releaseDate.length === 0 ||
+        (currentValues.current.title == title &&
+            currentValues.current.classification == classification &&
+            currentValues.current.genre == genre &&
+            currentValues.current.duration == duration &&
+            currentValues.current.releaseDate == releaseDate) ||
+        isEditing
+
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         const name = e.target.name
-        const value = e.target.value
+        const value =
+            name === 'duration' ? e.target.valueAsNumber : e.target.value
 
         setState((s) => ({ ...s, [name]: value }))
     }
@@ -41,9 +73,46 @@ const Edit = () => {
         setState((s) => ({ ...s, classification: v }))
     }
 
+    const handleOnSave = () => {
+        setIsEditing(true)
+
+        MoviesAPI.edit(currentValues.current.id, {
+            title,
+            classification,
+            genre,
+            duration,
+            releaseDate
+        })
+            .then(({ ok, ...props }) => {
+                if (!ok && 'reason' in props) {
+                    alert(props.reason)
+                    return
+                }
+
+                goToMovies()
+            })
+            .finally(() => {
+                setIsEditing(false)
+            })
+    }
+
+    useEffect(() => {
+        MoviesAPI.get(Number(movie_id)).then((movie) => {
+            currentValues.current.id = movie.id
+            currentValues.current.title = movie.title
+            currentValues.current.classification = movie.classification
+            currentValues.current.genre = movie.genre
+            currentValues.current.duration = movie.duration
+            currentValues.current.releaseDate = movie.releaseDate
+            setState(() => ({ ...movie }))
+        })
+    }, [])
+
     return (
         <>
-            <PageTitle>Editar pelicula (id={movie_id!})</PageTitle>
+            <PageTitle>
+                Editar pelicula ({currentValues.current.title})
+            </PageTitle>
 
             <Table>
                 <TableHeaders />
@@ -54,6 +123,7 @@ const Edit = () => {
                             type='text'
                             placeholder='Titulo de la pelicula'
                             spellCheck='false'
+                            autoComplete='off'
                             value={title}
                             name='title'
                             onChange={handleInputChange}
@@ -74,6 +144,7 @@ const Edit = () => {
                         <Input
                             type='text'
                             placeholder='Genero'
+                            autoComplete='off'
                             spellCheck='false'
                             name='genre'
                             value={genre}
@@ -107,8 +178,14 @@ const Edit = () => {
             </Table>
 
             <ActionsButtons>
-                <Button type='success'>Guardar</Button>
-                <Button onClick={() => navigateTo('/movies')} type='danger'>
+                <Button
+                    onClick={handleOnSave}
+                    disabled={isButtonDisabled}
+                    type='success'
+                >
+                    Guardar
+                </Button>
+                <Button onClick={goToMovies} type='danger'>
                     Cancelar
                 </Button>
             </ActionsButtons>

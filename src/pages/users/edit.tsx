@@ -87,7 +87,7 @@ const Edit = () => {
 
     return (
         <>
-            <PageTitle>Editar usuario (id={user_id!})</PageTitle>
+            <PageTitle>Editar usuario ({currentName})</PageTitle>
 
             <Table>
                 <TableHeaders />
@@ -98,6 +98,7 @@ const Edit = () => {
                             type='text'
                             placeholder='Nombre'
                             spellCheck='false'
+                            autoComplete='off'
                             value={name}
                             name='name'
                             onChange={handleInputChange}

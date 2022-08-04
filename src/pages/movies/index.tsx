@@ -7,12 +7,13 @@ import {
     Add as AddButton,
     OptionsMenu
 } from '@components/table'
-import testMovies from './testMovies.json'
-import { FC } from 'react'
+import type { FC } from 'react'
+import { useEffect, useState } from 'react'
 import type { Movie } from '@typ/data'
 import { TableHeaders, columnsWidth } from './common'
 import Divider from '@components/pages/Divider'
 import * as pagesUtils from '@utils/pages'
+import { MoviesAPI } from '@api'
 
 const {
     titleWidth,
@@ -74,6 +75,15 @@ const MoviesRows: FC<MoviesRowsProps> = ({ movies, onEdit, onDelete }) => {
 const Movies = () => {
     const navigateTo = useNavigate()
 
+    const [movies, setMovies] = useState<Movie[]>([])
+    const [reload, setReload] = useState(false)
+
+    useEffect(() => {
+        MoviesAPI.list().then((movies) => {
+            setMovies(movies)
+        })
+    }, [reload])
+
     const goToCreateMovie = () => {
         navigateTo('/movies/create')
     }
@@ -82,7 +92,17 @@ const Movies = () => {
         navigateTo(`/movies/edit/${id}`)
     })
 
-    const onDelete = pagesUtils.id((id: number) => {})
+    const onDelete = pagesUtils.id((id: number) => {
+        const yes = confirm('Eliminar pelicula?')
+
+        if (!yes) {
+            return
+        }
+
+        MoviesAPI.delete(id).then(() => {
+            setReload((v) => !v)
+        })
+    })
 
     return (
         <>
@@ -92,7 +112,7 @@ const Movies = () => {
                 <Table>
                     <TableHeaders />
                     <MoviesRows
-                        movies={testMovies}
+                        movies={movies}
                         onEdit={onEdit}
                         onDelete={onDelete}
                     />

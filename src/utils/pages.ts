@@ -8,13 +8,9 @@ export const id = (func: (id: number) => void) => {
     }
 }
 
-const toMinutes = (n: number) => [Math.floor(n / 60), n % 60]
-
-const toHours = (n: number) => [Math.floor(n / (60 * 60)), n % (60 * 60)]
-
-// Where `duration` represents a duration of time in seconds.
+// Where `duration` represents a duration of time in minutes.
 export const prettifyDuration = (duration: number) => {
-    const [hours, remaining] = toHours(duration)
-    const [minutes] = toMinutes(remaining)
+    const hours = Math.floor(duration / 60)
+    const minutes = duration % 60
     return `${hours}h ${minutes}m`
 }

@@ -7,6 +7,7 @@ import Button from '@components/Button'
 import type { NewMovie } from '@typ/data'
 import ActionsButtons from '@components/pages/ActionsButtons'
 import { TableHeaders, classificationOptions, columnsWidth } from './common'
+import { MoviesAPI } from '@api'
 
 const {
     titleWidth,
@@ -18,6 +19,11 @@ const {
 
 const Create = () => {
     const navigateTo = useNavigate()
+    const [isCreating, setIsCreating] = useState(false)
+
+    const goToMovies = () => {
+        navigateTo('/movies')
+    }
 
     const [{ title, classification, genre, duration, releaseDate }, setState] =
         useState<NewMovie>({
@@ -28,15 +34,47 @@ const Create = () => {
             releaseDate: ''
         })
 
+    const isButtonDisabled =
+        title.length === 0 ||
+        classification.length === 0 ||
+        genre.length === 0 ||
+        duration < 0 ||
+        releaseDate.length === 0 ||
+        isCreating
+
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         const name = e.target.name
-        const value = e.target.value
+        const value =
+            name === 'duration' ? e.target.valueAsNumber : e.target.value
 
         setState((s) => ({ ...s, [name]: value }))
     }
 
     const handleClasificationChange = (v: string) => {
         setState((s) => ({ ...s, classification: v }))
+    }
+
+    const handleOnCreate = () => {
+        setIsCreating(true)
+
+        MoviesAPI.create({
+            title,
+            classification,
+            genre,
+            duration,
+            releaseDate
+        })
+            .then(({ ok, ...props }) => {
+                if (!ok && 'reason' in props) {
+                    alert(props.reason)
+                    return
+                }
+
+                goToMovies()
+            })
+            .finally(() => {
+                setIsCreating(false)
+            })
     }
 
     return (
@@ -51,6 +89,7 @@ const Create = () => {
                         <Input
                             type='text'
                             placeholder='Titulo de la pelicula'
+                            autoComplete='off'
                             spellCheck='false'
                             value={title}
                             name='title'
@@ -73,6 +112,7 @@ const Create = () => {
                             type='text'
                             placeholder='Genero'
                             spellCheck='false'
+                            autoComplete='off'
                             name='genre'
                             value={genre}
                             onChange={handleInputChange}
@@ -104,8 +144,18 @@ const Create = () => {
             </Table>
 
             <ActionsButtons>
-                <Button type='success'>Agregar</Button>
-                <Button onClick={() => navigateTo('/movies')} type='danger'>
+                <Button
+                    onClick={handleOnCreate}
+                    disabled={isButtonDisabled}
+                    type='success'
+                >
+                    Agregar
+                </Button>
+                <Button
+                    disabled={isCreating}
+                    onClick={goToMovies}
+                    type='danger'
+                >
                     Cancelar
                 </Button>
             </ActionsButtons>

@@ -1,7 +1,7 @@
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import PageTitle from '@components/PageTitle'
-import testSchedules from './testSchedules.json'
 import type { Schedule } from '@typ/data'
 import { TableHeaders, columnsWidth } from './common'
 import Divider from '@components/pages/Divider'
@@ -13,6 +13,7 @@ import {
     Add as AddButton,
     OptionsMenu
 } from '@components/table'
+import { SchedulesAPI } from '@api'
 
 const { nameWidth, timeWidth } = columnsWidth
 
@@ -49,6 +50,8 @@ const RoomsRows: FC<SchedulesRowsProps> = ({ schedules, onEdit, onDelete }) => {
 
 const Rooms = () => {
     const navigateTo = useNavigate()
+    const [reload, setReload] = useState(false)
+    const [schedules, setSchedules] = useState<Schedule[]>([])
 
     const goToCreateSchedule = () => {
         navigateTo('/schedules/create')
@@ -58,7 +61,21 @@ const Rooms = () => {
         navigateTo(`/schedules/edit/${id}`)
     })
 
-    const onDelete = pagesUtils.id((id: number) => {})
+    const onDelete = pagesUtils.id((id: number) => {
+        const yes = confirm('Eliminar horario?')
+
+        if (!yes) {
+            return
+        }
+
+        SchedulesAPI.delete(id).then(() => {
+            setReload((v) => !v)
+        })
+    })
+
+    useEffect(() => {
+        SchedulesAPI.list().then((schedules) => setSchedules(schedules))
+    }, [reload])
 
     return (
         <>
@@ -68,7 +85,7 @@ const Rooms = () => {
                 <Table>
                     <TableHeaders />
                     <RoomsRows
-                        schedules={testSchedules}
+                        schedules={schedules}
                         onEdit={onEdit}
                         onDelete={onDelete}
                     />

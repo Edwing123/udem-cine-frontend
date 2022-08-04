@@ -47,7 +47,7 @@ export class AuthAPI {
 
 export class UsersAPI {
     static async get(id: number) {
-        const res = await fetch(endpoints.USER_GET + `/${id}`, {
+        const res = await fetch(endpoints.USERS_GET + `/${id}`, {
             credentials: 'include'
         })
 

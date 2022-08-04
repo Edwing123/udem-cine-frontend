@@ -1,8 +1,8 @@
 import { Cell, Row } from '@components/table'
 
 export const columnsWidth = {
-    nameWidth: '15%',
-    timeWidth: '10%'
+    nameWidth: '18%',
+    timeWidth: '15%'
 }
 
 const { nameWidth, timeWidth } = columnsWidth

@@ -7,16 +7,38 @@ import Button from '@components/Button'
 import type { NewRoom } from '@typ/data'
 import ActionsButtons from '@components/pages/ActionsButtons'
 import { columnsWidth, TableHeaders } from './common'
+import { RoomsAPI } from '@api'
 
 const { numberWidth, seatsWidth } = columnsWidth
 
 const Create = () => {
     const navigateTo = useNavigate()
 
+    const [isCreating, setIsCreating] = useState(false)
+
     const [{ number, seats }, setState] = useState<NewRoom>({
         number: 0,
         seats: 0
     })
+
+    const isButtonDisabled = number < 0 || seats < 0 || isCreating
+
+    const goToRooms = () => navigateTo('/rooms')
+
+    const handleOnSave = () => {
+        setIsCreating(true)
+
+        RoomsAPI.create({ number, seats })
+            .then(({ ok, ...props }) => {
+                if (!ok && 'reason' in props) {
+                    alert(props.reason)
+                    return
+                }
+
+                goToRooms()
+            })
+            .finally(() => setIsCreating(false))
+    }
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         const name = e.target.name
@@ -61,8 +83,14 @@ const Create = () => {
             </Table>
 
             <ActionsButtons>
-                <Button type='success'>Agregar</Button>
-                <Button onClick={() => navigateTo('/rooms')} type='danger'>
+                <Button
+                    disabled={isButtonDisabled}
+                    onClick={handleOnSave}
+                    type='success'
+                >
+                    Agregar
+                </Button>
+                <Button disabled={isCreating} onClick={goToRooms} type='danger'>
                     Cancelar
                 </Button>
             </ActionsButtons>
