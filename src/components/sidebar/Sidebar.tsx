@@ -2,6 +2,10 @@ import { styled } from '@config/stitches.config'
 import Header from './Header'
 import Navigation from './Navigation'
 import Button from '@components/Button'
+import { logout } from '@store/user'
+import { useNavigate } from 'react-router-dom'
+import { userStore } from '@store/user'
+import { useStore } from '@nanostores/react'
 
 const ButtonContainer = styled('div', {
     width: '100%',
@@ -20,14 +24,25 @@ const StyledSidebar = styled('aside', {
 })
 
 const Sidebar = () => {
+    const goTo = useNavigate()
+    const { name, role } = useStore(userStore)
+
+    const handleOnLogout = () => {
+        logout().then(() => {
+            goTo('/login')
+        })
+    }
+
     return (
         <StyledSidebar>
-            <Header />
+            <Header userName={name} />
 
-            <Navigation />
+            <Navigation role={role} />
 
             <ButtonContainer>
-                <Button type='danger'>Cerrar sesion</Button>
+                <Button onClick={handleOnLogout} type='danger'>
+                    Cerrar sesion
+                </Button>
             </ButtonContainer>
         </StyledSidebar>
     )

@@ -1,6 +1,7 @@
 import Title from '@components/Title'
 import { styled } from '@config/stitches.config'
 import profilePicuture from '@assets/images/profile-picture.svg'
+import type { FC } from 'react'
 
 const StyledHeader = styled('header', {
     width: '100%',
@@ -39,7 +40,11 @@ const Separator = styled('span', {
     backgroundColor: '$sidebarSeparatorBgColor'
 })
 
-const Header = () => {
+type Props = {
+    userName: string
+}
+
+const Header: FC<Props> = ({ userName }) => {
     return (
         <StyledHeader>
             <StyledTitle size={1}>UdeMCine</StyledTitle>
@@ -52,7 +57,7 @@ const Header = () => {
                 src={profilePicuture}
             />
 
-            <Username>Edwing123</Username>
+            <Username>{userName}</Username>
 
             <Separator />
         </StyledHeader>

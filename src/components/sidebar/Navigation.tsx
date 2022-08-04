@@ -3,6 +3,7 @@ import navigationItems from './navigationItems.json'
 import { navigation as navigationIcons } from '@assets/icons'
 import type { NavigationIconsKeys } from '@assets/icons'
 import NavigationItem from './NavigationItem'
+import { FC } from 'react'
 
 const Container = styled('nav', {
     width: '100%',
@@ -10,7 +11,23 @@ const Container = styled('nav', {
     flexDirection: 'column'
 })
 
-const Navigation = () => {
+type Props = {
+    role: string
+}
+
+const Navigation: FC<Props> = ({ role }) => {
+    if (role === 'taquillero') {
+        const { id, icon, ...props } = navigationItems[5]
+
+        return (
+            <NavigationItem
+                key={id}
+                icon={navigationIcons[icon as NavigationIconsKeys]}
+                {...props}
+            />
+        )
+    }
+
     const items = navigationItems.map(({ id, icon, ...props }) => (
         <NavigationItem
             key={id}

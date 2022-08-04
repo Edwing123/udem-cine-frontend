@@ -1,6 +1,7 @@
-import { lazy, Suspense } from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { lazy, Suspense, useEffect } from 'react'
+import { Routes, Route, useNavigate } from 'react-router-dom'
 import { globalStyles } from '@config/stitches.config'
+import { isLoggedInStore, getUserDetails } from '@store/user'
 
 const Home = lazy(() => import('@pages/home'))
 
@@ -28,6 +29,18 @@ const Login = lazy(() => import('@pages/login'))
 
 const App = () => {
     globalStyles()
+    const goTo = useNavigate()
+
+    useEffect(() => {
+        getUserDetails()
+            .then(() => {
+                isLoggedInStore.set(true)
+                goTo('/users')
+            })
+            .catch(() => {
+                goTo('/login')
+            })
+    }, [])
 
     return (
         <>

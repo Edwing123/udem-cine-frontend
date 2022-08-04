@@ -1,8 +1,11 @@
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { styled } from '@config/stitches.config'
 import Input from './Input'
 import { forms as formsIcons } from '@assets/icons'
-import type { Credentails } from '@typ/data'
+import type { Credentials } from '@typ/data'
+import { login, isLoggedInStore } from '@store/user'
+import { useStore } from '@nanostores/react'
+import { useNavigate } from 'react-router-dom'
 
 const StyledForm = styled('form', {
     width: '90%',
@@ -26,17 +29,48 @@ const Button = styled('button', {
     border: 'none',
     borderRadius: '$md',
     color: '$loginButtonTextColor',
-    backgroundColor: '$loginButtonBgColor'
+    backgroundColor: '$loginButtonBgColor',
+
+    '&[disabled]': {
+        backgroundColor: '$white5',
+        cursor: 'not-allowed'
+    }
 })
 
 const Form = () => {
-    const [credentials, setCredentails] = useState<Credentails>({
-        username: '',
+    const goTo = useNavigate()
+
+    const isLoggedIn = useStore(isLoggedInStore)
+
+    const [{ userName, password }, setCredentails] = useState<Credentials>({
+        userName: '',
         password: ''
     })
 
+    const isButtonDisabled = userName.length === 0 || password.length === 0
+
+    const goToUsers = () => {
+        goTo('/users')
+    }
+
+    const handleOnClick = () => {
+        login({ userName, password })
+            .then(() => {
+                goToUsers()
+            })
+            .catch(() => {
+                console.log('Bad credentials')
+            })
+    }
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            goToUsers()
+        }
+    }, [])
+
     const handleUsernameChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setCredentails((c) => ({ ...c, username: e.target.value }))
+        setCredentails((c) => ({ ...c, userName: e.target.value }))
     }
 
     const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -49,7 +83,7 @@ const Form = () => {
                 type='text'
                 placeholder='Nombre de usuario'
                 icon={formsIcons.user}
-                value={credentials.username}
+                value={userName}
                 onChange={handleUsernameChange}
             />
 
@@ -57,12 +91,14 @@ const Form = () => {
                 type='password'
                 placeholder='Contraseña'
                 icon={formsIcons.key}
-                value={credentials.password}
+                value={password}
                 onChange={handlePasswordChange}
             />
 
             <ButtonContainer>
-                <Button>Ingresar</Button>
+                <Button onClick={handleOnClick} disabled={isButtonDisabled}>
+                    Ingresar
+                </Button>
             </ButtonContainer>
         </StyledForm>
     )

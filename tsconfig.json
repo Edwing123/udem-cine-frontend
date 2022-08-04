@@ -22,7 +22,9 @@
             "@typ/*": ["./src/types/*"],
             "@config/*": ["./src/config/*"],
             "@assets/*": ["./src/assets/*"],
-            "@utils/*": ["./src/utils/*"]
+            "@utils/*": ["./src/utils/*"],
+            "@api": ["./src/api"],
+            "@store/*": ["./src/store/*"]
         }
     },
     "include": ["src"],

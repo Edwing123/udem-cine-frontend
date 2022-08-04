@@ -1,5 +1,5 @@
-export type Credentails = {
-    username: string
+export type Credentials = {
+    userName: string
     password: string
 }
 
