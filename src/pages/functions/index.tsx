@@ -7,12 +7,13 @@ import {
     Add as AddButton,
     OptionsMenu
 } from '@components/table'
-import testFunctions from './testFunctions.json'
 import { FC } from 'react'
-import type { Function } from '@typ/data'
+import { useState, useEffect } from 'react'
+import type { FunctionDetails } from '@typ/data'
 import { columnsWidth } from './common'
 import Divider from '@components/pages/Divider'
 import * as pagesUtils from '@utils/pages'
+import { FunctionsAPI } from '@api'
 
 const { movieWidth, scheduleWidth, roomWidth, priceWidth, createdAtWidth } =
     columnsWidth
@@ -40,7 +41,7 @@ export const TableHeaders = () => {
 }
 
 type FunctionsRowsProps = {
-    functions: Function[]
+    functions: FunctionDetails[]
     onEdit: (id: number) => () => void
     onDelete: (id: number) => () => void
 }
@@ -92,11 +93,30 @@ const Functions = () => {
         navigateTo('/functions/create')
     }
 
+    const [functions, setFunctions] = useState<FunctionDetails[]>([])
+    const [reload, setReload] = useState(false)
+
     const onEdit = pagesUtils.id((id: number) => {
         navigateTo(`/functions/edit/${id}`)
     })
 
-    const onDelete = pagesUtils.id((id: number) => {})
+    useEffect(() => {
+        FunctionsAPI.list().then((functions) => {
+            setFunctions(functions)
+        })
+    }, [reload])
+
+    const onDelete = pagesUtils.id((id: number) => {
+        const yes = confirm('Eliminar funcion?')
+
+        if (!yes) {
+            return
+        }
+
+        FunctionsAPI.delete(id).then(() => {
+            setReload((v) => !v)
+        })
+    })
 
     return (
         <>
@@ -106,7 +126,7 @@ const Functions = () => {
                 <Table>
                     <TableHeaders />
                     <FunctionsRows
-                        functions={testFunctions}
+                        functions={functions}
                         onEdit={onEdit}
                         onDelete={onDelete}
                     />

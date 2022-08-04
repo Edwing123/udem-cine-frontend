@@ -1,23 +1,26 @@
 import { useNavigate } from 'react-router-dom'
-import { ChangeEvent, useState } from 'react'
+import type { ChangeEvent } from 'react'
+import { useState, useEffect } from 'react'
 import PageTitle from '@components/PageTitle'
 import { Table, Row, Cell } from '@components/table'
 import { Input, Select } from '@components/controls'
 import Button from '@components/Button'
-import type { NewFunction } from '@typ/data'
+import type { NewFunction, Room, Schedule, Movie } from '@typ/data'
 import ActionsButtons from '@components/pages/ActionsButtons'
-import {
-    TableHeaders,
-    roomOptions,
-    movieOptions,
-    scheduleOptions,
-    columnsWidth
-} from './common'
+import { TableHeaders, columnsWidth } from './common'
+import { FunctionsAPI, MoviesAPI, RoomsAPI, SchedulesAPI } from '@api'
 
 const { movieWidth, scheduleWidth, roomWidth, priceWidth } = columnsWidth
 
 const Create = () => {
     const navigateTo = useNavigate()
+    const [isCreating, setIsCreating] = useState(false)
+
+    const goToFunctions = () => navigateTo('/functions')
+
+    const [movies, setMovies] = useState<Movie[]>([])
+    const [schedules, setSchedules] = useState<Schedule[]>([])
+    const [rooms, setRooms] = useState<Room[]>([])
 
     const [{ movieId, scheduleId, room, price }, setState] =
         useState<NewFunction>({
@@ -27,6 +30,9 @@ const Create = () => {
             price: 0
         })
 
+    const isButtonDisabled =
+        movieId <= 0 || scheduleId <= 0 || room <= 0 || price <= 0 || isCreating
+
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         const name = e.target.name
         const value = e.target.valueAsNumber
@@ -34,8 +40,62 @@ const Create = () => {
         setState((s) => ({ ...s, [name]: value }))
     }
 
+    const movieOptions = movies.map(({ id, title }) => {
+        return (
+            <Select.Item value={id.toString()} key={id}>
+                <Select.ItemText>{title}</Select.ItemText>
+            </Select.Item>
+        )
+    })
+
+    const scheduleOptions = schedules.map(({ id, name }) => {
+        return (
+            <Select.Item value={id.toString()} key={id}>
+                <Select.ItemText>{name}</Select.ItemText>
+            </Select.Item>
+        )
+    })
+
+    const roomOptions = rooms.map(({ number }) => {
+        return (
+            <Select.Item value={number.toString()} key={number}>
+                <Select.ItemText>{number}</Select.ItemText>
+            </Select.Item>
+        )
+    })
+
     const handleSelectChange = (prop: string) => (v: string) => {
-        setState((s) => ({ ...s, [prop]: v }))
+        setState((s) => ({ ...s, [prop]: Number(v) }))
+    }
+
+    useEffect(() => {
+        MoviesAPI.list().then((movies) => setMovies(movies))
+
+        SchedulesAPI.list().then((schedules) => setSchedules(schedules))
+
+        RoomsAPI.list().then((rooms) => setRooms(rooms))
+    }, [])
+
+    const handleOnCreate = () => {
+        setIsCreating(true)
+
+        FunctionsAPI.create({
+            movieId,
+            price,
+            room,
+            scheduleId
+        })
+            .then(({ ok, ...props }) => {
+                if (!ok && 'reason' in props) {
+                    alert(props.reason)
+                    return
+                }
+
+                goToFunctions()
+            })
+            .finally(() => {
+                setIsCreating(false)
+            })
     }
 
     return (
@@ -90,8 +150,18 @@ const Create = () => {
             </Table>
 
             <ActionsButtons>
-                <Button type='success'>Crear</Button>
-                <Button onClick={() => navigateTo('/functions')} type='danger'>
+                <Button
+                    disabled={isButtonDisabled}
+                    onClick={handleOnCreate}
+                    type='success'
+                >
+                    Crear
+                </Button>
+                <Button
+                    disabled={isCreating}
+                    onClick={goToFunctions}
+                    type='danger'
+                >
                     Cancelar
                 </Button>
             </ActionsButtons>

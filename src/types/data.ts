@@ -51,6 +51,15 @@ export type UpdateSchedule = Omit<Schedule, 'id'>
 
 export type Function = {
     id: number
+    price: number
+    createdAt: string
+    movieId: string
+    scheduleId: string
+    room: number
+}
+
+export type FunctionDetails = {
+    id: number
     movie: string
     schedule: string
     room: number

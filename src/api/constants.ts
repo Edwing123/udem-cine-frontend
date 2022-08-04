@@ -31,5 +31,12 @@ export const endpoints = {
     SCHEDULES_GET: `${BASE}/schedules/get`,
     SCHEDULES_CREATE: `${BASE}/schedules/create`,
     SCHEDULES_EDIT: `${BASE}/schedules/edit`,
-    SCHEDULES_DELETE: `${BASE}/schedules/delete`
+    SCHEDULES_DELETE: `${BASE}/schedules/delete`,
+
+    // Schedules related.
+    FUNCTIONS_LIST: `${BASE}/functions/list`,
+    FUNCTIONS_GET: `${BASE}/functions/get`,
+    FUNCTIONS_CREATE: `${BASE}/functions/create`,
+    FUNCTIONS_EDIT: `${BASE}/functions/edit`,
+    FUNCTIONS_DELETE: `${BASE}/functions/delete`
 }

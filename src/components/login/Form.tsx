@@ -59,7 +59,8 @@ const Form = () => {
                 goToUsers()
             })
             .catch(() => {
-                console.log('Bad credentials')
+                console.log('what')
+                alert('Credenciales incorrectas')
             })
     }
 
