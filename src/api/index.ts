@@ -1,3 +1,3 @@
-import UserAPI from './users'
+import { AuthAPI, UsersAPI } from './users'
 
-export { UserAPI }
+export { AuthAPI, UsersAPI }

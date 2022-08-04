@@ -3,13 +3,14 @@ const BASE = 'http://localhost:4040'
 export const endpoints = {
     AUTH_LOGIN: `${BASE}/auth/login`,
     AUTH_LOGOUT: `${BASE}/auth/logout`,
+    IS_LOGGED_IN: `${BASE}/is-logged-in`,
 
     // User related.
-    USER_DETAILS: `${BASE}/user`,
+    USER_GET: `${BASE}/user`,
     USERS_LIST: `${BASE}/users/list`,
     USERS_CREATE: `${BASE}/users/create`,
-    USERS_DELETE: `${BASE}/users/edit`,
-    USERS_EDIT: `${BASE}/users/delete`,
+    USERS_EDIT: `${BASE}/users/edit`,
+    USERS_DELETE: `${BASE}/users/delete`,
 
     // Movies related.
     MOVIES_LIST: `${BASE}/movies/list`,

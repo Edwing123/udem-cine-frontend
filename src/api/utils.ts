@@ -11,3 +11,8 @@ export const defaultHeaders = () => {
     headers.append('content-type', 'application/json')
     return headers
 }
+
+export type GenericResponse = { ok: boolean } & (
+    | { reason: string }
+    | { data: string }
+)

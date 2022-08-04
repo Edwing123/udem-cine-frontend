@@ -18,6 +18,11 @@ const Button = styled('button', {
         backgroundColor: '$$onHoverBgColor'
     },
 
+    '&[disabled]': {
+        cursor: 'not-allowed',
+        background: '$white5'
+    },
+
     variants: {
         type: {
             success: {

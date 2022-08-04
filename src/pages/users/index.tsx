@@ -1,7 +1,7 @@
-import { FC } from 'react'
+import type { FC } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import PageTitle from '@components/PageTitle'
-import testUsers from './testUsers.json'
 import type { User } from '@typ/data'
 import { TableHeaders, columnsWidth } from './common'
 import Divider from '@components/pages/Divider'
@@ -13,6 +13,9 @@ import {
     Add as AddButton,
     OptionsMenu
 } from '@components/table'
+import { UsersAPI } from '@api'
+import { userStore } from '@store/user'
+import { useStore } from '@nanostores/react'
 
 const { nameWidth, roleWidth } = columnsWidth
 
@@ -49,6 +52,9 @@ const UsersRows: FC<UsersRowsProps> = ({ users, onEdit, onDelete }) => {
 
 const Users = () => {
     const navigateTo = useNavigate()
+    const [users, setUsers] = useState<User[]>([])
+    const [reload, setReload] = useState(false)
+    const { id: loggedInUserId } = useStore(userStore)
 
     const goToCreateUser = () => {
         navigateTo('/users/create')
@@ -58,7 +64,28 @@ const Users = () => {
         navigateTo(`/users/edit/${id}`)
     })
 
-    const onDelete = pagesUtils.id((id: number) => {})
+    const onDelete = pagesUtils.id((id: number) => {
+        if (id === loggedInUserId) {
+            alert('No puedes eliminarte a ti mismo!')
+            return
+        }
+
+        const yes = confirm('Eliminar usuario?')
+
+        if (!yes) {
+            return
+        }
+
+        UsersAPI.delete(id).then(() => {
+            setReload((v) => !v)
+        })
+    })
+
+    useEffect(() => {
+        UsersAPI.list().then((users) => {
+            setUsers(users)
+        })
+    }, [reload])
 
     return (
         <>
@@ -68,7 +95,7 @@ const Users = () => {
                 <Table>
                     <TableHeaders />
                     <UsersRows
-                        users={testUsers}
+                        users={users}
                         onEdit={onEdit}
                         onDelete={onDelete}
                     />

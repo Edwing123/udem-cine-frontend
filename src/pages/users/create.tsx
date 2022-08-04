@@ -7,6 +7,7 @@ import Button from '@components/Button'
 import type { NewUser } from '@typ/data'
 import ActionsButtons from '@components/pages/ActionsButtons'
 import { roleOptions, columnsWidth } from './common'
+import { UsersAPI } from '@api'
 
 const { nameWidth, roleWidth, passwordWidth } = columnsWidth
 
@@ -29,11 +30,21 @@ export const TableHeaders = () => {
 const Create = () => {
     const navigateTo = useNavigate()
 
+    const goToUsers = () => {
+        navigateTo('/users')
+    }
+
+    const [isCreating, setIsCreating] = useState(false)
+
     const [{ name, role, password }, setState] = useState<NewUser>({
         name: '',
         role: '',
         password: ''
     })
+
+    const isButtonDisabled =
+        (name.length == 0 && password.length == 0 && role.length == 0) ||
+        isCreating
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         const name = e.target.name
@@ -44,6 +55,22 @@ const Create = () => {
 
     const handleRoleChange = (v: string) => {
         setState((s) => ({ ...s, role: v }))
+    }
+
+    const handleOnCreate = () => {
+        setIsCreating(true)
+        UsersAPI.create({ name, role, password })
+            .then(({ ok, ...props }) => {
+                if (!ok && 'reason' in props) {
+                    alert(props.reason)
+                    return
+                }
+
+                goToUsers()
+            })
+            .finally(() => {
+                setIsCreating(false)
+            })
     }
 
     return (
@@ -59,6 +86,7 @@ const Create = () => {
                             type='text'
                             placeholder='Nombre'
                             spellCheck='false'
+                            autoComplete='off'
                             value={name}
                             name='name'
                             onChange={handleInputChange}
@@ -77,7 +105,7 @@ const Create = () => {
 
                     <Cell width={passwordWidth} type='text'>
                         <Input
-                            type='text'
+                            type='password'
                             placeholder='Contraseña'
                             spellCheck='false'
                             value={password}
@@ -89,8 +117,14 @@ const Create = () => {
             </Table>
 
             <ActionsButtons>
-                <Button type='success'>Crear</Button>
-                <Button onClick={() => navigateTo('/users')} type='danger'>
+                <Button
+                    type='success'
+                    onClick={handleOnCreate}
+                    disabled={isButtonDisabled}
+                >
+                    Crear
+                </Button>
+                <Button onClick={goToUsers} disabled={isCreating} type='danger'>
                     Cancelar
                 </Button>
             </ActionsButtons>

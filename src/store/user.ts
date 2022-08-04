@@ -1,6 +1,6 @@
 import { atom } from 'nanostores'
 import { User, Credentials } from '@typ/data'
-import { UserAPI } from '@api'
+import { UsersAPI, AuthAPI } from '@api'
 
 export const userStore = atom<User>({
     id: 0,
@@ -11,18 +11,18 @@ export const userStore = atom<User>({
 export const isLoggedInStore = atom(false)
 
 export async function login(credentials: Credentials) {
-    await UserAPI.login(credentials)
+    const userId = await AuthAPI.login(credentials)
 
     isLoggedInStore.set(true)
-    await getUserDetails()
+    await getUserDetails(userId)
 }
 
 export async function logout() {
-    await UserAPI.logout()
+    await AuthAPI.logout()
     isLoggedInStore.set(false)
 }
 
-export async function getUserDetails() {
-    const user = await UserAPI.getUserDetails()
+export async function getUserDetails(id: number) {
+    const user = await UsersAPI.get(id)
     userStore.set(user)
 }
