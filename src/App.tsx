@@ -4,6 +4,7 @@ import { globalStyles } from '@config/stitches.config'
 import { getUserDetails, isLoggedInStore, userStore } from '@store/user'
 import { AuthAPI } from '@api'
 import { useStore } from '@nanostores/react'
+import PageTitle from '@components/PageTitle'
 
 const Home = lazy(() => import('@pages/home'))
 
@@ -27,15 +28,11 @@ const Functions = lazy(() => import('@pages/functions/index'))
 const FunctionsCreate = lazy(() => import('@pages/functions/create'))
 const FunctionsEdit = lazy(() => import('@pages/functions/edit'))
 
+const FunctionsCatalog = lazy(() => import('@pages/catalog/index'))
+
 const Login = lazy(() => import('@pages/login'))
 
 const AdminOnly = ({ isAdmin }: { isAdmin: boolean }) => {
-    const goTo = useNavigate()
-
-    useEffect(() => {
-        !isAdmin && goTo('/tickets')
-    })
-
     if (isAdmin) {
         return (
             <>
@@ -46,7 +43,7 @@ const AdminOnly = ({ isAdmin }: { isAdmin: boolean }) => {
 
     return (
         <>
-            <h1>Protected page</h1>
+            <PageTitle>Pagina protegida!</PageTitle>
         </>
     )
 }
@@ -68,7 +65,7 @@ const App = () => {
                 if (userStore.get().role === 'admin') {
                     goTo('/users')
                 } else {
-                    goTo('/tickets')
+                    goTo('/catalog')
                 }
             })
         })
@@ -136,8 +133,8 @@ const App = () => {
                         />
                     </Route>
 
-                    {/* Tickets */}
-                    <Route path='tickets' element={<h1>Tickets</h1>} />
+                    {/* Catalog of movies */}
+                    <Route path='catalog' element={<FunctionsCatalog />} />
                 </Route>
 
                 {/* Login */}

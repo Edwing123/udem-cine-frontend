@@ -11,7 +11,7 @@ import ActionsButtons from '@components/pages/ActionsButtons'
 import { TableHeaders, roleOptions, columnsWidth } from './common'
 import { UsersAPI } from '@api'
 import { useStore } from '@nanostores/react'
-import { userStore, getUserDetails } from '@store/user'
+import { userStore, logout } from '@store/user'
 
 const { nameWidth, roleWidth } = columnsWidth
 
@@ -74,8 +74,13 @@ const Edit = () => {
                     return
                 }
 
+                // If the logged in user modifies itself, logout
+                // and redirect to login page, so the changes take effect.
                 if (loggedInUserId == currentValues.current.id) {
-                    getUserDetails(loggedInUserId)
+                    logout().then(() => {
+                        navigateTo('/login')
+                    })
+                    return
                 }
 
                 goToUsers()

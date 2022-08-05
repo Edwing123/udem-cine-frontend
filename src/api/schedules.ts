@@ -1,7 +1,7 @@
 import { endpoints } from './constants'
-import { stringify, defaultHeaders } from './utils'
-import type { GenericResponse } from './utils'
+import { stringify, defaultHeaders } from '@utils/api'
 import type { Schedule, NewSchedule, UpdateSchedule } from '@typ/data'
+import { GenericMessage } from '@typ/api'
 
 export class SchedulesAPI {
     static async get(id: number) {
@@ -41,7 +41,7 @@ export class SchedulesAPI {
             throw new Error(res.status.toString())
         }
 
-        return (await res.json()) as GenericResponse
+        return (await res.json()) as GenericMessage
     }
 
     static async edit(id: number, schedule: UpdateSchedule) {
@@ -56,7 +56,7 @@ export class SchedulesAPI {
             throw new Error(res.status.toString())
         }
 
-        return (await res.json()) as GenericResponse
+        return (await res.json()) as GenericMessage
     }
 
     static async delete(id: number) {
@@ -71,6 +71,6 @@ export class SchedulesAPI {
             throw new Error(res.status.toString())
         }
 
-        return await res.json()
+        return (await res.json()) as GenericMessage
     }
 }

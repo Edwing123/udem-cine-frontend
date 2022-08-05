@@ -1,6 +1,6 @@
 import { endpoints } from './constants'
-import type { GenericResponse } from './utils'
-import { stringify, defaultHeaders } from './utils'
+import type { GenericMessage } from '@typ/api'
+import { stringify, defaultHeaders } from '@utils/api'
 import type { Credentials, User, NewUser, UpdateUser } from '@typ/data'
 
 export class AuthAPI {
@@ -83,7 +83,7 @@ export class UsersAPI {
             throw new Error(res.status.toString())
         }
 
-        return (await res.json()) as GenericResponse
+        return (await res.json()) as GenericMessage
     }
 
     static async edit(id: number, user: UpdateUser) {
@@ -98,7 +98,7 @@ export class UsersAPI {
             throw new Error(res.status.toString())
         }
 
-        return (await res.json()) as GenericResponse
+        return (await res.json()) as GenericMessage
     }
 
     static async delete(id: number) {

@@ -53,8 +53,8 @@ export type Function = {
     id: number
     price: number
     createdAt: string
-    movieId: string
-    scheduleId: string
+    movieId: number
+    scheduleId: number
     room: number
 }
 

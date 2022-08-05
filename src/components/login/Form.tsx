@@ -49,24 +49,23 @@ const Form = () => {
 
     const isButtonDisabled = userName.length === 0 || password.length === 0
 
-    const goToUsers = () => {
-        goTo('/users')
+    const goToHome = () => {
+        goTo('/')
     }
 
     const handleOnClick = () => {
         login({ userName, password })
             .then(() => {
-                goToUsers()
+                goToHome()
             })
             .catch(() => {
-                console.log('what')
                 alert('Credenciales incorrectas')
             })
     }
 
     useEffect(() => {
         if (isLoggedIn) {
-            goToUsers()
+            goToHome()
         }
     }, [])
 

@@ -70,9 +70,7 @@ const Create = () => {
 
     useEffect(() => {
         MoviesAPI.list().then((movies) => setMovies(movies))
-
         SchedulesAPI.list().then((schedules) => setSchedules(schedules))
-
         RoomsAPI.list().then((rooms) => setRooms(rooms))
     }, [])
 

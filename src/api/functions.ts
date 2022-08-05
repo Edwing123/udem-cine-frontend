@@ -1,6 +1,6 @@
 import { endpoints } from './constants'
-import { stringify, defaultHeaders } from './utils'
-import type { GenericResponse } from './utils'
+import { stringify, defaultHeaders } from '@utils/api'
+import { GenericMessage } from '@typ/api'
 import type {
     Function,
     NewFunction,
@@ -46,7 +46,7 @@ export class FunctionsAPI {
             throw new Error(res.status.toString())
         }
 
-        return (await res.json()) as GenericResponse
+        return (await res.json()) as GenericMessage
     }
 
     static async edit(id: number, func: UpdateFunction) {
@@ -61,7 +61,7 @@ export class FunctionsAPI {
             throw new Error(res.status.toString())
         }
 
-        return (await res.json()) as GenericResponse
+        return (await res.json()) as GenericMessage
     }
 
     static async delete(id: number) {
@@ -76,6 +76,6 @@ export class FunctionsAPI {
             throw new Error(res.status.toString())
         }
 
-        return await res.json()
+        return (await res.json()) as GenericMessage
     }
 }
