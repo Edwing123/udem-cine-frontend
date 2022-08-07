@@ -5,7 +5,7 @@ import PageTitle from '@components/PageTitle'
 import type { Schedule } from '@typ/data'
 import { TableHeaders, columnsWidth } from './common'
 import Divider from '@components/pages/Divider'
-import * as pagesUtils from '@utils/pages'
+import * as pageUtils from '@utils/pages'
 import {
     Table,
     Row,
@@ -57,24 +57,33 @@ const Rooms = () => {
         navigateTo('/schedules/create')
     }
 
-    const onEdit = pagesUtils.id((id: number) => {
+    const onEdit = pageUtils.id((id: number) => {
         navigateTo(`/schedules/edit/${id}`)
     })
 
-    const onDelete = pagesUtils.id((id: number) => {
+    const onDelete = pageUtils.id((id: number) => {
         const yes = confirm('Eliminar horario?')
 
         if (!yes) {
             return
         }
 
-        SchedulesAPI.delete(id).then(() => {
+        SchedulesAPI.delete(id).then((res) => {
+            if (!res.ok) return
             setReload((v) => !v)
         })
     })
 
     useEffect(() => {
-        SchedulesAPI.list().then((schedules) => setSchedules(schedules))
+        SchedulesAPI.list().then((res) => {
+            if (!res.ok) return
+            setSchedules(
+                res.data.map((schedule) => ({
+                    ...schedule,
+                    time: pageUtils.getTime(schedule.time)
+                }))
+            )
+        })
     }, [reload])
 
     return (

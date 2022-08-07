@@ -7,7 +7,7 @@ import Button from '@components/Button'
 import type { NewMovie } from '@typ/data'
 import ActionsButtons from '@components/pages/ActionsButtons'
 import { TableHeaders, classificationOptions, columnsWidth } from './common'
-import { MoviesAPI } from '@api'
+import { codes, MoviesAPI } from '@api'
 
 const {
     titleWidth,
@@ -64,10 +64,12 @@ const Create = () => {
             duration,
             releaseDate
         })
-            .then(({ ok, ...props }) => {
-                if (!ok && 'reason' in props) {
-                    alert(props.reason)
-                    return
+            .then((res) => {
+                if (!res.ok) {
+                    if (res.code === codes.MOVIE_TITLE_EXISTS) {
+                        alert('El nombre de la pelicula ya existe')
+                        return
+                    }
                 }
 
                 goToMovies()

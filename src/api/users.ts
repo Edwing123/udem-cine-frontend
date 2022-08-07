@@ -1,118 +1,50 @@
-import { endpoints } from './constants'
-import type { GenericMessage } from '@typ/api'
-import { stringify, defaultHeaders } from '@utils/api'
+import { endpoints, join } from './constants'
 import type { Credentials, User, NewUser, UpdateUser } from '@typ/data'
+import { fetcher } from './fetcher'
 
 export class AuthAPI {
     static async login(credentials: Credentials) {
-        const res = await fetch(endpoints.AUTH_LOGIN, {
-            method: 'POST',
-            headers: defaultHeaders(),
-            credentials: 'include',
-            body: stringify(credentials)
-        })
-
-        if (res.status !== 200) {
-            throw new Error(res.status.toString())
-        }
-
-        return (await res.json()).data as number
+        return fetcher<{ id: number }>(
+            endpoints.AUTH_LOGIN,
+            'POST',
+            credentials
+        )
     }
 
     static async logout() {
-        const res = await fetch(endpoints.AUTH_LOGOUT, {
-            method: 'POST',
-            credentials: 'include'
-        })
-
-        if (res.status !== 200) {
-            throw new Error(res.status.toString())
-        }
-
-        return res.status === 200
+        return fetcher(endpoints.AUTH_LOGOUT, 'POST')
     }
 
     static async isLoggedIn() {
-        const res = await fetch(endpoints.IS_LOGGED_IN, {
-            credentials: 'include'
-        })
-
-        if (res.status !== 200) {
-            throw new Error(res.status.toString())
-        }
-
-        return (await res.json()).data as { id: number; ok: boolean }
+        return fetcher<{ id: number }>(endpoints.IS_LOGGED_IN, 'GET')
     }
 }
 
 export class UsersAPI {
     static async get(id: number) {
-        const res = await fetch(endpoints.USERS_GET + `/${id}`, {
-            credentials: 'include'
-        })
-
-        if (res.status !== 200) {
-            throw new Error(res.status.toString())
-        }
-
-        return (await res.json()).data as User
+        return fetcher<User>(join(endpoints.USERS_GET, id.toString()), 'GET')
     }
 
     static async list() {
-        const res = await fetch(endpoints.USERS_LIST, {
-            method: 'GET',
-            credentials: 'include'
-        })
-
-        if (res.status != 200) {
-            throw new Error(res.status.toString())
-        }
-
-        return (await res.json()).data as User[]
+        return fetcher<User[]>(endpoints.USERS_LIST, 'GET')
     }
 
     static async create(user: NewUser) {
-        const res = await fetch(endpoints.USERS_CREATE, {
-            method: 'POST',
-            headers: defaultHeaders(),
-            credentials: 'include',
-            body: stringify(user)
-        })
-
-        if (res.status !== 200) {
-            throw new Error(res.status.toString())
-        }
-
-        return (await res.json()) as GenericMessage
+        return fetcher<string>(endpoints.USERS_CREATE, 'POST', user)
     }
 
     static async edit(id: number, user: UpdateUser) {
-        const res = await fetch(endpoints.USERS_EDIT, {
-            method: 'PATCH',
-            headers: defaultHeaders(),
-            credentials: 'include',
-            body: stringify({ id, data: user })
-        })
-
-        if (res.status !== 200) {
-            throw new Error(res.status.toString())
-        }
-
-        return (await res.json()) as GenericMessage
+        return fetcher<string>(
+            join(endpoints.USERS_EDIT, id.toString()),
+            'PATCH',
+            user
+        )
     }
 
     static async delete(id: number) {
-        const res = await fetch(endpoints.USERS_DELETE, {
-            method: 'DELETE',
-            headers: defaultHeaders(),
-            credentials: 'include',
-            body: stringify({ id })
-        })
-
-        if (res.status !== 200) {
-            throw new Error(res.status.toString())
-        }
-
-        return await res.json()
+        return fetcher<string>(
+            join(endpoints.USERS_DELETE, id.toString()),
+            'DELETE'
+        )
     }
 }

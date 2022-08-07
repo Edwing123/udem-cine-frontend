@@ -9,7 +9,7 @@ import { UpdateUser, User } from '@typ/data'
 import { Input, Select } from '@components/controls'
 import ActionsButtons from '@components/pages/ActionsButtons'
 import { TableHeaders, roleOptions, columnsWidth } from './common'
-import { UsersAPI } from '@api'
+import { codes, UsersAPI } from '@api'
 import { useStore } from '@nanostores/react'
 import { userStore, logout } from '@store/user'
 
@@ -38,7 +38,10 @@ const Edit = () => {
         (name === currentName && currentRole == role) || isEditing
 
     useEffect(() => {
-        UsersAPI.get(Number(user_id)).then((user) => {
+        UsersAPI.get(Number(user_id)).then((res) => {
+            if (!res.ok) return
+
+            const user = res.data
             currentValues.current.id = user.id
             currentValues.current.name = user.name
             currentValues.current.role = user.role
@@ -68,14 +71,16 @@ const Edit = () => {
             name,
             role
         })
-            .then(({ ok, ...props }) => {
-                if (!ok && 'reason' in props) {
-                    alert(props.reason)
-                    return
+            .then((res) => {
+                if (!res.ok) {
+                    if (res.code === codes.USER_NAME_EXISTS) {
+                        alert('Este nombre de usuario ya existe')
+                        return
+                    }
                 }
 
                 // If the logged in user modifies itself, logout
-                // and redirect to login page, so the changes take effect.
+                // and redirect to login page.
                 if (loggedInUserId == currentValues.current.id) {
                     logout().then(() => {
                         navigateTo('/login')

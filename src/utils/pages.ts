@@ -14,3 +14,14 @@ export const prettifyDuration = (duration: number) => {
     const minutes = duration % 60
     return `${hours}h ${minutes}m`
 }
+
+const formatter = new Intl.DateTimeFormat('default', {
+    timeStyle: 'short',
+    timeZone: 'utc',
+    hour12: false
+})
+
+export const getTime = (time: string) => {
+    const d = new Date(time)
+    return formatter.format(d)
+}

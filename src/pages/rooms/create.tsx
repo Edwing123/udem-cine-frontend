@@ -7,7 +7,7 @@ import Button from '@components/Button'
 import type { NewRoom } from '@typ/data'
 import ActionsButtons from '@components/pages/ActionsButtons'
 import { columnsWidth, TableHeaders } from './common'
-import { RoomsAPI } from '@api'
+import { codes, RoomsAPI } from '@api'
 
 const { numberWidth, seatsWidth } = columnsWidth
 
@@ -29,10 +29,12 @@ const Create = () => {
         setIsCreating(true)
 
         RoomsAPI.create({ number, seats })
-            .then(({ ok, ...props }) => {
-                if (!ok && 'reason' in props) {
-                    alert(props.reason)
-                    return
+            .then((res) => {
+                if (!res.ok) {
+                    if (res.code === codes.ROOM_EXISTS) {
+                        alert('Esta sala ya existe')
+                        return
+                    }
                 }
 
                 goToRooms()

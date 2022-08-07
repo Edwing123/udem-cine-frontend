@@ -11,10 +11,13 @@ export const userStore = atom<User>({
 export const isLoggedInStore = atom(false)
 
 export async function login(credentials: Credentials) {
-    const userId = await AuthAPI.login(credentials)
+    const res = await AuthAPI.login(credentials)
 
-    isLoggedInStore.set(true)
-    await getUserDetails(userId)
+    if (res.ok) {
+        isLoggedInStore.set(true)
+    }
+
+    return res
 }
 
 export async function logout() {
@@ -23,6 +26,9 @@ export async function logout() {
 }
 
 export async function getUserDetails(id: number) {
-    const user = await UsersAPI.get(id)
-    userStore.set(user)
+    const res = await UsersAPI.get(id)
+
+    if (res.ok) {
+        userStore.set(res.data)
+    }
 }

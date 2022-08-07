@@ -9,7 +9,8 @@ import { Schedule, UpdateSchedule } from '@typ/data'
 import { Input } from '@components/controls'
 import ActionsButtons from '@components/pages/ActionsButtons'
 import { TableHeaders, columnsWidth } from './common'
-import { SchedulesAPI } from '@api'
+import { codes, SchedulesAPI } from '@api'
+import * as pageUtils from '@utils/pages'
 
 const { nameWidth, timeWidth } = columnsWidth
 
@@ -24,7 +25,7 @@ const Edit = () => {
         id: 0,
         name: '',
         time: ''
-    })
+    }).current
 
     const [{ name, time }, setState] = useState<UpdateSchedule>({
         name: '',
@@ -32,8 +33,7 @@ const Edit = () => {
     })
 
     const isButtonDisabled =
-        (currentValues.current.name === name &&
-            currentValues.current.time === time) ||
+        (currentValues.name === name && currentValues.time === time) ||
         name.length == 0 ||
         time.length == 0 ||
         isEditing
@@ -46,10 +46,17 @@ const Edit = () => {
     }
 
     const handleOnSave = () => {
-        SchedulesAPI.edit(currentValues.current.id, { name, time })
-            .then(({ ok, ...props }) => {
-                if (!ok && 'reason' in props) {
-                    alert(props.reason)
+        SchedulesAPI.edit(currentValues.id, { name, time })
+            .then((res) => {
+                if (!res.ok) {
+                    if (res.code === codes.SCHEDULE_EXISTS) {
+                        alert('Este horario ya existe')
+                    }
+
+                    if (res.code === codes.FUNCTION_DEPENDS_ON_SCHEDULE) {
+                        alert('Este horario ya existe')
+                    }
+
                     return
                 }
 
@@ -61,17 +68,21 @@ const Edit = () => {
     }
 
     useEffect(() => {
-        SchedulesAPI.get(Number(schedule_id)).then((schedule) => {
-            currentValues.current.id = schedule.id
-            currentValues.current.name = schedule.name
-            currentValues.current.time = schedule.time
+        SchedulesAPI.get(Number(schedule_id)).then((res) => {
+            if (!res.ok) return
+
+            const schedule = res.data
+            schedule.time = pageUtils.getTime(schedule.time)
+            currentValues.id = schedule.id
+            currentValues.name = schedule.name
+            currentValues.time = schedule.time
             setState({ ...schedule })
         })
     }, [])
 
     return (
         <>
-            <PageTitle>Editar horario ({name})</PageTitle>
+            <PageTitle>Editar horario ({currentValues.name})</PageTitle>
 
             <Table>
                 <TableHeaders />

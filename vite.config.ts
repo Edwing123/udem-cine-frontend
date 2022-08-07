@@ -1,10 +1,17 @@
 import { defineConfig } from 'vite'
 import path from 'path'
 import react from '@vitejs/plugin-react'
+import { readFileSync } from 'fs'
 
 // https://vitejs.dev/config/
 export default defineConfig({
     plugins: [react()],
+    server: {
+        https: {
+            cert: readFileSync('./certs/udem-cine.com.pem'),
+            key: readFileSync('./certs/udem-cine.com-key.pem')
+        }
+    },
     resolve: {
         alias: {
             '@pages': path.resolve(__dirname, './src/pages/'),

@@ -1,76 +1,32 @@
-import { endpoints } from './constants'
-import { stringify, defaultHeaders } from '@utils/api'
-import { GenericMessage } from '@typ/api'
+import { endpoints, join } from './constants'
 import type { Room, NewRoom, UpdateRoom } from '@typ/data'
+import { fetcher } from './fetcher'
 
 export class RoomsAPI {
-    static async get(number: number) {
-        const res = await fetch(endpoints.ROOMS_GET + `/${number}`, {
-            credentials: 'include'
-        })
-
-        if (res.status !== 200) {
-            throw new Error(res.status.toString())
-        }
-
-        return (await res.json()).data as Room
+    static async get(id: number) {
+        return fetcher<Room>(join(endpoints.ROOMS_GET, id.toString()), 'GET')
     }
 
     static async list() {
-        const res = await fetch(endpoints.ROOMS_LIST, {
-            method: 'GET',
-            credentials: 'include'
-        })
-
-        if (res.status != 200) {
-            throw new Error(res.status.toString())
-        }
-
-        return (await res.json()).data as Room[]
+        return fetcher<Room[]>(endpoints.ROOMS_LIST, 'GET')
     }
 
     static async create(room: NewRoom) {
-        const res = await fetch(endpoints.ROOMS_CREATE, {
-            method: 'POST',
-            headers: defaultHeaders(),
-            credentials: 'include',
-            body: stringify(room)
-        })
-
-        if (res.status !== 200) {
-            throw new Error(res.status.toString())
-        }
-
-        return (await res.json()) as GenericMessage
+        return fetcher<string>(endpoints.ROOMS_CREATE, 'POST', room)
     }
 
     static async edit(id: number, room: UpdateRoom) {
-        const res = await fetch(endpoints.ROOMS_EDIT, {
-            method: 'PATCH',
-            headers: defaultHeaders(),
-            credentials: 'include',
-            body: stringify({ id, data: room })
-        })
-
-        if (res.status !== 200) {
-            throw new Error(res.status.toString())
-        }
-
-        return (await res.json()) as GenericMessage
+        return fetcher<string>(
+            join(endpoints.ROOMS_EDIT, id.toString()),
+            'PATCH',
+            room
+        )
     }
 
     static async delete(id: number) {
-        const res = await fetch(endpoints.ROOMS_DELETE, {
-            method: 'DELETE',
-            headers: defaultHeaders(),
-            credentials: 'include',
-            body: stringify({ id })
-        })
-
-        if (res.status !== 200) {
-            throw new Error(res.status.toString())
-        }
-
-        return (await res.json()) as GenericMessage
+        return fetcher<string>(
+            join(endpoints.ROOMS_DELETE, id.toString()),
+            'DELETE'
+        )
     }
 }

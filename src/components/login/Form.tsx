@@ -3,7 +3,7 @@ import { styled } from '@config/stitches.config'
 import Input from './Input'
 import { forms as formsIcons } from '@assets/icons'
 import type { Credentials } from '@typ/data'
-import { login, isLoggedInStore } from '@store/user'
+import { login, isLoggedInStore, getUserDetails, userStore } from '@store/user'
 import { useStore } from '@nanostores/react'
 import { useNavigate } from 'react-router-dom'
 
@@ -55,12 +55,17 @@ const Form = () => {
 
     const handleOnClick = () => {
         login({ userName, password })
-            .then(() => {
-                goToHome()
+            .then((res) => {
+                if (!res.ok) {
+                    alert('Las credenciales no son correctas')
+                    return
+                }
+
+                getUserDetails(res.data.id).then(() => {
+                    goToHome()
+                })
             })
-            .catch(() => {
-                alert('Credenciales incorrectas')
-            })
+            .catch(() => {})
     }
 
     useEffect(() => {

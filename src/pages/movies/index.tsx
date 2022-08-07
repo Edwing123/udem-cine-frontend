@@ -13,7 +13,7 @@ import type { Movie } from '@typ/data'
 import { TableHeaders, columnsWidth } from './common'
 import Divider from '@components/pages/Divider'
 import * as pagesUtils from '@utils/pages'
-import { MoviesAPI } from '@api'
+import { codes, MoviesAPI } from '@api'
 
 const {
     titleWidth,
@@ -79,8 +79,9 @@ const Movies = () => {
     const [reload, setReload] = useState(false)
 
     useEffect(() => {
-        MoviesAPI.list().then((movies) => {
-            setMovies(movies)
+        MoviesAPI.list().then((res) => {
+            if (!res.ok) return
+            setMovies(res.data)
         })
     }, [reload])
 
@@ -99,7 +100,16 @@ const Movies = () => {
             return
         }
 
-        MoviesAPI.delete(id).then(() => {
+        MoviesAPI.delete(id).then((res) => {
+            if (!res.ok) {
+                if (res.code == codes.FUNCTION_DEPENDS_ON_MOVIE) {
+                    alert(
+                        'No puedes eliminar esta pelicula porque una o mas funciones dependen de ella'
+                    )
+                }
+
+                return
+            }
             setReload((v) => !v)
         })
     })

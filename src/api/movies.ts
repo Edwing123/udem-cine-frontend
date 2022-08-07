@@ -1,76 +1,32 @@
-import { endpoints } from './constants'
-import { stringify, defaultHeaders } from '@utils/api'
-import { GenericMessage } from '@typ/api'
+import { endpoints, join } from './constants'
 import type { Movie, NewMovie, UpdateMovie } from '@typ/data'
+import { fetcher } from './fetcher'
 
 export class MoviesAPI {
     static async get(id: number) {
-        const res = await fetch(endpoints.MOVIES_GET + `/${id}`, {
-            credentials: 'include'
-        })
-
-        if (res.status !== 200) {
-            throw new Error(res.status.toString())
-        }
-
-        return (await res.json()).data as Movie
+        return fetcher<Movie>(join(endpoints.MOVIES_GET, id.toString()), 'GET')
     }
 
     static async list() {
-        const res = await fetch(endpoints.MOVIES_LIST, {
-            method: 'GET',
-            credentials: 'include'
-        })
-
-        if (res.status != 200) {
-            throw new Error(res.status.toString())
-        }
-
-        return (await res.json()).data as Movie[]
+        return fetcher<Movie[]>(endpoints.MOVIES_LIST, 'GET')
     }
 
     static async create(movie: NewMovie) {
-        const res = await fetch(endpoints.MOVIES_CREATE, {
-            method: 'POST',
-            headers: defaultHeaders(),
-            credentials: 'include',
-            body: stringify(movie)
-        })
-
-        if (res.status !== 200) {
-            throw new Error(res.status.toString())
-        }
-
-        return (await res.json()) as GenericMessage
+        return fetcher<string>(endpoints.MOVIES_CREATE, 'POST', movie)
     }
 
     static async edit(id: number, movie: UpdateMovie) {
-        const res = await fetch(endpoints.MOVIES_EDIT, {
-            method: 'PATCH',
-            headers: defaultHeaders(),
-            credentials: 'include',
-            body: stringify({ id, data: movie })
-        })
-
-        if (res.status !== 200) {
-            throw new Error(res.status.toString())
-        }
-
-        return (await res.json()) as GenericMessage
+        return fetcher<string>(
+            join(endpoints.MOVIES_EDIT, id.toString()),
+            'PATCH',
+            movie
+        )
     }
 
     static async delete(id: number) {
-        const res = await fetch(endpoints.MOVIES_DELETE, {
-            method: 'DELETE',
-            headers: defaultHeaders(),
-            credentials: 'include',
-            body: stringify({ id })
-        })
-
-        if (res.status !== 200) {
-            throw new Error(res.status.toString())
-        }
-
-        return (await res.json()) as GenericMessage
+        return fetcher<string>(
+            join(endpoints.MOVIES_DELETE, id.toString()),
+            'DELETE'
+        )
     }
 }

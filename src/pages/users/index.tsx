@@ -76,14 +76,19 @@ const Users = () => {
             return
         }
 
-        UsersAPI.delete(id).then(() => {
+        UsersAPI.delete(id).then((res) => {
+            if (!res.ok) return
             setReload((v) => !v)
         })
     })
 
     useEffect(() => {
-        UsersAPI.list().then((users) => {
-            setUsers(users)
+        UsersAPI.list().then((res) => {
+            if (!res.ok) {
+                return
+            }
+
+            setUsers(res.data)
         })
     }, [reload])
 

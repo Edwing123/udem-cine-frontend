@@ -13,7 +13,7 @@ import type { FunctionDetails } from '@typ/data'
 import { columnsWidth } from './common'
 import Divider from '@components/pages/Divider'
 import * as pagesUtils from '@utils/pages'
-import { FunctionsAPI } from '@api'
+import { codes, FunctionsAPI } from '@api'
 
 const { movieWidth, scheduleWidth, roomWidth, priceWidth, createdAtWidth } =
     columnsWidth
@@ -101,8 +101,9 @@ const Functions = () => {
     })
 
     useEffect(() => {
-        FunctionsAPI.list().then((functions) => {
-            setFunctions(functions)
+        FunctionsAPI.list().then((res) => {
+            if (!res.ok) return
+            setFunctions(res.data)
         })
     }, [reload])
 
@@ -113,9 +114,17 @@ const Functions = () => {
             return
         }
 
-        FunctionsAPI.delete(id).then(() => {
-            setReload((v) => !v)
-        })
+        FunctionsAPI.delete(id)
+            .then((res) => {
+                if (!res.ok) {
+                    if (res.code === codes.FUNCTION_ROOM_SCHEDULE_CONFLICT) {
+                        alert(
+                            'Actualmente la combinacion de sala y horario no estan disponibles'
+                        )
+                    }
+                }
+            })
+            .finally(() => setReload((v) => !v))
     })
 
     return (

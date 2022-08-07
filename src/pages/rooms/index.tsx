@@ -54,8 +54,9 @@ const Rooms = () => {
     const [reload, setReload] = useState(false)
 
     useEffect(() => {
-        RoomsAPI.list().then((rooms) => {
-            setRooms(rooms)
+        RoomsAPI.list().then((res) => {
+            if (!res.ok) return
+            setRooms(res.data)
         })
     }, [reload])
 

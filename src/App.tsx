@@ -54,19 +54,15 @@ const App = () => {
     const { role } = useStore(userStore)
 
     useEffect(() => {
-        AuthAPI.isLoggedIn().then(({ id, ok }) => {
-            if (!ok) {
+        AuthAPI.isLoggedIn().then((res) => {
+            if (!res.ok) {
                 goTo('/login')
                 return
             }
 
             isLoggedInStore.set(true)
-            getUserDetails(id).then(() => {
-                if (userStore.get().role === 'admin') {
-                    goTo('/users')
-                } else {
-                    goTo('/catalog')
-                }
+            getUserDetails(res.data.id).then(() => {
+                goTo('/')
             })
         })
     }, [])

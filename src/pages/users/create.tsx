@@ -7,7 +7,7 @@ import Button from '@components/Button'
 import type { NewUser } from '@typ/data'
 import ActionsButtons from '@components/pages/ActionsButtons'
 import { roleOptions, columnsWidth } from './common'
-import { UsersAPI } from '@api'
+import { codes, UsersAPI } from '@api'
 
 const { nameWidth, roleWidth, passwordWidth } = columnsWidth
 
@@ -43,7 +43,9 @@ const Create = () => {
     })
 
     const isButtonDisabled =
-        (name.length == 0 && password.length == 0 && role.length == 0) ||
+        name.length == 0 ||
+        password.length == 0 ||
+        role.length == 0 ||
         isCreating
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -60,10 +62,12 @@ const Create = () => {
     const handleOnCreate = () => {
         setIsCreating(true)
         UsersAPI.create({ name, role, password })
-            .then(({ ok, ...props }) => {
-                if (!ok && 'reason' in props) {
-                    alert(props.reason)
-                    return
+            .then((res) => {
+                if (!res.ok) {
+                    if (res.code === codes.USER_NAME_EXISTS) {
+                        alert('Este nombre de usuario ya existe')
+                        return
+                    }
                 }
 
                 goToUsers()

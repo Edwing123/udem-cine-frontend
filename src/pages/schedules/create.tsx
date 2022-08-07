@@ -7,7 +7,7 @@ import Button from '@components/Button'
 import type { NewSchedule } from '@typ/data'
 import ActionsButtons from '@components/pages/ActionsButtons'
 import { columnsWidth, TableHeaders } from './common'
-import { SchedulesAPI } from '@api'
+import { codes, SchedulesAPI } from '@api'
 
 const { nameWidth, timeWidth } = columnsWidth
 
@@ -40,10 +40,12 @@ const Create = () => {
             name,
             time
         })
-            .then(({ ok, ...props }) => {
-                if (!ok && 'reason' in props) {
-                    alert(props.reason)
-                    return
+            .then((res) => {
+                if (!res.ok) {
+                    if (res.code === codes.SCHEDULE_EXISTS) {
+                        alert('Este horario ya existe')
+                        return
+                    }
                 }
 
                 goToSchedules()

@@ -8,7 +8,7 @@ import { UpdateRoom, Room } from '@typ/data'
 import { Input } from '@components/controls'
 import ActionsButtons from '@components/pages/ActionsButtons'
 import { TableHeaders, columnsWidth } from './common'
-import { RoomsAPI } from '@api'
+import { codes, RoomsAPI } from '@api'
 
 const { numberWidth, seatsWidth } = columnsWidth
 
@@ -20,7 +20,7 @@ const Edit = () => {
     const currentValues = useRef<Room>({
         number: 0,
         seats: 0
-    })
+    }).current
 
     const [{ number, seats }, setState] = useState<UpdateRoom>({
         number: 0,
@@ -37,8 +37,7 @@ const Edit = () => {
     }
 
     const isButtonDisabled =
-        (currentValues.current.number === number &&
-            currentValues.current.seats === seats) ||
+        (currentValues.number === number && currentValues.seats === seats) ||
         number < 0 ||
         seats < 0 ||
         isEditing
@@ -46,10 +45,19 @@ const Edit = () => {
     const handleOnSave = () => {
         setIsEditing(true)
 
-        RoomsAPI.edit(currentValues.current.number, { number, seats })
-            .then(({ ok, ...props }) => {
-                if (!ok && 'reason' in props) {
-                    alert(props.reason)
+        RoomsAPI.edit(currentValues.number, { number, seats })
+            .then((res) => {
+                if (!res.ok) {
+                    if (res.code === codes.ROOM_EXISTS) {
+                        alert('Esta sala ya existe')
+                    }
+
+                    if (res.code == codes.FUNCTION_DEPENDS_ON_MOVIE) {
+                        alert(
+                            'No puedes eliminar esta sala porque una o mas funciones dependen de ella'
+                        )
+                    }
+
                     return
                 }
 
@@ -59,16 +67,19 @@ const Edit = () => {
     }
 
     useEffect(() => {
-        RoomsAPI.get(Number(room_id)).then((room) => {
-            currentValues.current.number = room.number
-            currentValues.current.seats = room.seats
+        RoomsAPI.get(Number(room_id)).then((res) => {
+            if (!res.ok) return
+
+            const room = res.data
+            currentValues.number = room.number
+            currentValues.seats = room.seats
             setState(() => ({ ...room }))
         })
     }, [])
 
     return (
         <>
-            <PageTitle>Editar sala ({currentValues.current.number})</PageTitle>
+            <PageTitle>Editar sala ({currentValues.number})</PageTitle>
 
             <Table>
                 <TableHeaders />

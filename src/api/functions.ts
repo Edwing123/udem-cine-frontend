@@ -1,81 +1,40 @@
-import { endpoints } from './constants'
-import { stringify, defaultHeaders } from '@utils/api'
-import { GenericMessage } from '@typ/api'
+import { endpoints, join } from './constants'
 import type {
     Function,
     NewFunction,
     UpdateFunction,
     FunctionDetails
 } from '@typ/data'
+import { fetcher } from './fetcher'
 
 export class FunctionsAPI {
     static async get(id: number) {
-        const res = await fetch(endpoints.FUNCTIONS_GET + `/${id}`, {
-            credentials: 'include'
-        })
-
-        if (res.status !== 200) {
-            throw new Error(res.status.toString())
-        }
-
-        return (await res.json()).data as Function
+        return fetcher<Function>(
+            join(endpoints.FUNCTIONS_GET, id.toString()),
+            'GET'
+        )
     }
 
     static async list() {
-        const res = await fetch(endpoints.FUNCTIONS_LIST, {
-            method: 'GET',
-            credentials: 'include'
-        })
-
-        if (res.status != 200) {
-            throw new Error(res.status.toString())
-        }
-
-        return (await res.json()).data as FunctionDetails[]
+        return fetcher<FunctionDetails[]>(endpoints.FUNCTIONS_LIST, 'GET')
     }
 
     static async create(func: NewFunction) {
-        const res = await fetch(endpoints.FUNCTIONS_CREATE, {
-            method: 'POST',
-            headers: defaultHeaders(),
-            credentials: 'include',
-            body: stringify(func)
-        })
-
-        if (res.status !== 200) {
-            throw new Error(res.status.toString())
-        }
-
-        return (await res.json()) as GenericMessage
+        return fetcher<string>(endpoints.FUNCTIONS_CREATE, 'POST', func)
     }
 
     static async edit(id: number, func: UpdateFunction) {
-        const res = await fetch(endpoints.FUNCTIONS_EDIT, {
-            method: 'PATCH',
-            headers: defaultHeaders(),
-            credentials: 'include',
-            body: stringify({ id, data: func })
-        })
-
-        if (res.status !== 200) {
-            throw new Error(res.status.toString())
-        }
-
-        return (await res.json()) as GenericMessage
+        return fetcher<string>(
+            join(endpoints.FUNCTIONS_EDIT, id.toString()),
+            'PATCH',
+            func
+        )
     }
 
     static async delete(id: number) {
-        const res = await fetch(endpoints.FUNCTIONS_DELETE, {
-            method: 'DELETE',
-            headers: defaultHeaders(),
-            credentials: 'include',
-            body: stringify({ id })
-        })
-
-        if (res.status !== 200) {
-            throw new Error(res.status.toString())
-        }
-
-        return (await res.json()) as GenericMessage
+        return fetcher<string>(
+            join(endpoints.FUNCTIONS_DELETE, id.toString()),
+            'DELETE'
+        )
     }
 }

@@ -10,7 +10,7 @@ import { UpdateMovie, Movie } from '@typ/data'
 import { Input, Select } from '@components/controls'
 import ActionsButtons from '@components/pages/ActionsButtons'
 import { TableHeaders, classificationOptions, columnsWidth } from './common'
-import { MoviesAPI } from '@api'
+import { codes, MoviesAPI } from '@api'
 
 const {
     titleWidth,
@@ -31,7 +31,7 @@ const Edit = () => {
         duration: 0,
         genre: '',
         releaseDate: ''
-    })
+    }).current
 
     const goToMovies = () => {
         navigateTo('/movies')
@@ -54,11 +54,11 @@ const Edit = () => {
         genre.length === 0 ||
         duration < 0 ||
         releaseDate.length === 0 ||
-        (currentValues.current.title == title &&
-            currentValues.current.classification == classification &&
-            currentValues.current.genre == genre &&
-            currentValues.current.duration == duration &&
-            currentValues.current.releaseDate == releaseDate) ||
+        (currentValues.title == title &&
+            currentValues.classification == classification &&
+            currentValues.genre == genre &&
+            currentValues.duration == duration &&
+            currentValues.releaseDate == releaseDate) ||
         isEditing
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -76,17 +76,19 @@ const Edit = () => {
     const handleOnSave = () => {
         setIsEditing(true)
 
-        MoviesAPI.edit(currentValues.current.id, {
+        MoviesAPI.edit(currentValues.id, {
             title,
             classification,
             genre,
             duration,
             releaseDate
         })
-            .then(({ ok, ...props }) => {
-                if (!ok && 'reason' in props) {
-                    alert(props.reason)
-                    return
+            .then((res) => {
+                if (!res.ok) {
+                    if (res.code === codes.MOVIE_TITLE_EXISTS) {
+                        alert('El nombre de la pelicula ya existe')
+                        return
+                    }
                 }
 
                 goToMovies()
@@ -97,22 +99,23 @@ const Edit = () => {
     }
 
     useEffect(() => {
-        MoviesAPI.get(Number(movie_id)).then((movie) => {
-            currentValues.current.id = movie.id
-            currentValues.current.title = movie.title
-            currentValues.current.classification = movie.classification
-            currentValues.current.genre = movie.genre
-            currentValues.current.duration = movie.duration
-            currentValues.current.releaseDate = movie.releaseDate
+        MoviesAPI.get(Number(movie_id)).then((res) => {
+            if (!res.ok) return
+
+            const movie = res.data
+            currentValues.id = movie.id
+            currentValues.title = movie.title
+            currentValues.classification = movie.classification
+            currentValues.genre = movie.genre
+            currentValues.duration = movie.duration
+            currentValues.releaseDate = movie.releaseDate
             setState(() => ({ ...movie }))
         })
     }, [])
 
     return (
         <>
-            <PageTitle>
-                Editar pelicula ({currentValues.current.title})
-            </PageTitle>
+            <PageTitle>Editar pelicula ({currentValues.title})</PageTitle>
 
             <Table>
                 <TableHeaders />
